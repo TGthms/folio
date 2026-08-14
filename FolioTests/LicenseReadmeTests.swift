@@ -32,6 +32,11 @@ final class LicenseReadmeTests: XCTestCase {
             encoding: .utf8
         )
         XCTAssertTrue(settings.contains("settings.copyright"), "Settings must show the shipped copyright string")
+        XCTAssertTrue(settings.contains("FolioLinks.repository"), "Settings must link to the shipped repo URL")
+        XCTAssertTrue(
+            settings.contains("https://github.com/TGthms/folio"),
+            "Settings repo link must be https://github.com/TGthms/folio"
+        )
 
         let sidebar = try String(
             contentsOf: root.appendingPathComponent("Folio/Features/Sidebar/SidebarView.swift"),

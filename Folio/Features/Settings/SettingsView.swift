@@ -1,5 +1,9 @@
 import SwiftUI
 
+enum FolioLinks {
+    static let repository = URL(string: "https://github.com/TGthms/folio")!
+}
+
 struct SettingsView: View {
     @ObservedObject var model: AppModel
     @State private var language: String = L10n.overrideCode ?? "system"
@@ -18,9 +22,18 @@ struct SettingsView: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
             Spacer()
-            Text(L10n.t("settings.copyright"))
-                .font(.system(size: 11))
-                .foregroundStyle(.secondary)
+            HStack(alignment: .firstTextBaseline) {
+                Text(L10n.t("settings.copyright"))
+                Spacer(minLength: 12)
+                Link(destination: FolioLinks.repository) {
+                    HStack(spacing: 4) {
+                        Text(L10n.t("settings.repo"))
+                        Image(systemName: "arrow.up.right")
+                    }
+                }
+            }
+            .font(.system(size: 11))
+            .foregroundStyle(.secondary)
             HStack {
                 Spacer()
                 Button(L10n.t("done")) {

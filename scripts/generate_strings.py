@@ -121,6 +121,7 @@ EN = {
     "settings.language.system": "System",
     "settings.language.relaunch": "Changing language applies the next time Folio opens.",
     "settings.copyright": "Copyright © 2026 TGthms & Grok",
+    "settings.repo": "GitHub",
     "menu.open": "Open…",
     "menu.export": "Export…",
     "menu.tools": "Tools",
@@ -273,6 +274,11 @@ def write_catalog(table: dict[str, dict[str, str]]) -> None:
 PATCH = {
     "settings.copyright": {
         loc: "Copyright © 2026 TGthms & Grok"
+        for loc in LOCALES
+        if loc not in ("en", "Base")
+    },
+    "settings.repo": {
+        loc: "GitHub"
         for loc in LOCALES
         if loc not in ("en", "Base")
     },
