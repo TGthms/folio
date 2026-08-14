@@ -21,7 +21,7 @@ Drop PDFs or images into a single workspace, arrange pages, pick a job, then exp
 - 30 interface languages, including RTL; language follows macOS
 - Sandboxed. No network entitlement. Work stays on this computer.
 
-The running app is named **Folio**. This repository is **TGthms**.
+The running app is named **Folio**. This repository is **[folio](https://github.com/TGthms/folio)**.
 
 ## Build
 

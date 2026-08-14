@@ -102,7 +102,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $model.settingsPresented) {
             SettingsView(model: model)
-                .frame(width: 440, height: 240)
+                .frame(width: 440, height: 268)
         }
         .focusable()
         .focusEffectDisabled()

@@ -27,7 +27,7 @@
 	<key>NSHighResolutionCapable</key>
 	<true/>
 	<key>NSHumanReadableCopyright</key>
-	<string>Copyright © 2026 TGthms</string>
+	<string>Copyright © 2026 TGthms &amp; Grok</string>
 	<key>CFBundleDocumentTypes</key>
 	<array>
 		<dict>

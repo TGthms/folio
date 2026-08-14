@@ -33,6 +33,11 @@ struct SidebarView: View {
                 }
                 .padding(.bottom, 20)
             }
+            Text(L10n.t("settings.copyright"))
+                .font(.system(size: 10))
+                .foregroundStyle(FolioTheme.secondaryInk(for: scheme))
+                .padding(.horizontal, 18)
+                .padding(.bottom, 14)
         }
         .background {
             if reduceTransparency {

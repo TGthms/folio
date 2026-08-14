@@ -86,7 +86,7 @@ struct FolioApp: App {
 
         Settings {
             SettingsView(model: model)
-                .frame(width: 420, height: 220)
+                .frame(width: 420, height: 248)
         }
     }
 }

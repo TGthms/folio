@@ -21,7 +21,7 @@ Suelta PDFs o imágenes en un espacio de trabajo, ordena las páginas, elige un 
 - 30 idiomas de interfaz, RTL incluido; el idioma sigue a macOS
 - Entorno aislado. Sin permiso de red. El trabajo se queda en este ordenador.
 
-La aplicación se llama **Folio**. Este repositorio se llama **TGthms**.
+La aplicación se llama **Folio**. Este repositorio se llama **[folio](https://github.com/TGthms/folio)**.
 
 ## Compilar
 

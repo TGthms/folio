@@ -21,7 +21,7 @@ Ziehen Sie PDFs oder Bilder in einen Arbeitsbereich, ordnen Sie Seiten, wählen 
 - 30 Oberflächensprachen, einschließlich RTL; die Sprache folgt macOS
 - Sandbox. Keine Netzwerkberechtigung. Die Arbeit bleibt auf diesem Rechner.
 
-Die laufende App heißt **Folio**. Dieses Repository heißt **TGthms**.
+Die laufende App heißt **Folio**. Dieses Repository heißt **[folio](https://github.com/TGthms/folio)**.
 
 ## Bauen
 

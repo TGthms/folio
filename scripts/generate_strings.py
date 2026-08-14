@@ -120,6 +120,7 @@ EN = {
     "settings.language": "Language",
     "settings.language.system": "System",
     "settings.language.relaunch": "Changing language applies the next time Folio opens.",
+    "settings.copyright": "Copyright © 2026 TGthms & Grok",
     "menu.open": "Open…",
     "menu.export": "Export…",
     "menu.tools": "Tools",
@@ -270,6 +271,11 @@ def write_catalog(table: dict[str, dict[str, str]]) -> None:
 
 
 PATCH = {
+    "settings.copyright": {
+        loc: "Copyright © 2026 TGthms & Grok"
+        for loc in LOCALES
+        if loc not in ("en", "Base")
+    },
     "inspector.encrypted": {
         "es": "Cifrado", "fr": "Chiffré", "de": "Verschlüsselt", "it": "Crittografato",
         "pt-BR": "Criptografado", "pt-PT": "Encriptado", "nl": "Versleuteld", "da": "Krypteret",

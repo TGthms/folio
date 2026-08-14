@@ -18,6 +18,9 @@ struct SettingsView: View {
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
             Spacer()
+            Text(L10n.t("settings.copyright"))
+                .font(.system(size: 11))
+                .foregroundStyle(.secondary)
             HStack {
                 Spacer()
                 Button(L10n.t("done")) {

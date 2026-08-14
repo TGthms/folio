@@ -7,6 +7,7 @@ final class LicenseReadmeTests: XCTestCase {
         let text = try String(contentsOf: url, encoding: .utf8)
         XCTAssertTrue(text.contains("MIT License"), "LICENSE must be the MIT License")
         XCTAssertTrue(text.contains("TGthms"), "LICENSE must name TGthms")
+        XCTAssertFalse(text.contains("Grok"), "LICENSE must not name Grok")
         XCTAssertTrue(
             text.localizedCaseInsensitiveContains("permission is hereby granted"),
             "LICENSE must grant permission"
@@ -14,6 +15,37 @@ final class LicenseReadmeTests: XCTestCase {
         XCTAssertTrue(
             text.localizedCaseInsensitiveContains("without warranty"),
             "LICENSE must include the no-warranty clause"
+        )
+    }
+
+    func testAppCopyrightNamesTGthmsAndGrok() throws {
+        let root = repositoryRoot()
+        let plist = try String(
+            contentsOf: root.appendingPathComponent("Folio/Resources/Info.plist"),
+            encoding: .utf8
+        )
+        XCTAssertTrue(plist.contains("TGthms"), "Info.plist copyright must name TGthms")
+        XCTAssertTrue(plist.contains("Grok"), "Info.plist copyright must name Grok")
+
+        let settings = try String(
+            contentsOf: root.appendingPathComponent("Folio/Features/Settings/SettingsView.swift"),
+            encoding: .utf8
+        )
+        XCTAssertTrue(settings.contains("settings.copyright"), "Settings must show the shipped copyright string")
+
+        let sidebar = try String(
+            contentsOf: root.appendingPathComponent("Folio/Features/Sidebar/SidebarView.swift"),
+            encoding: .utf8
+        )
+        XCTAssertTrue(sidebar.contains("settings.copyright"), "Sidebar must show the shipped copyright string")
+
+        let english = try String(
+            contentsOf: root.appendingPathComponent("scripts/generate_strings.py"),
+            encoding: .utf8
+        )
+        XCTAssertTrue(
+            english.contains("Copyright © 2026 TGthms & Grok"),
+            "shipped settings.copyright must be TGthms & Grok"
         )
     }
 

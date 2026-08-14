@@ -21,7 +21,7 @@ Déposez des PDF ou des images dans un seul espace de travail, organisez les pag
 - 30 langues d’interface, RTL compris ; la langue suit macOS
 - Sandbox. Aucun droit réseau. Le travail reste sur cet ordinateur.
 
-L’application s’appelle **Folio**. Ce dépôt s’appelle **TGthms**.
+L’application s’appelle **Folio**. Ce dépôt s’appelle **[folio](https://github.com/TGthms/folio)**.
 
 ## Compiler
 
