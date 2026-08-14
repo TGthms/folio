@@ -1,0 +1,33 @@
+# Local build products — never publish these
+build/
+DerivedData/
+*.app
+*.dSYM
+*.dSYM.zip
+*.ipa
+*.xcresult
+
+# Xcode user state
+xcuserdata/
+*.xcuserstate
+*.xccheckout
+*.xcscmblueprint
+*.moved-aside
+*.hmap
+timeline.xctimeline
+
+# SwiftPM / local tooling
+.build/
+.swiftpm/
+*.swp
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Editors
+.idea/
+.vscode/

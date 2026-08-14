@@ -1,0 +1,186 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXFileReference section */
+		A7AB4C9C93D01C1A98FCAD09 = { isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Folio/Resources/Info.plist"; sourceTree = SOURCE_ROOT; };
+		324BC8F72C7989D2213C22D6 = { isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = Folio.entitlements; path = "Folio/Resources/Folio.entitlements"; sourceTree = SOURCE_ROOT; };
+		C3A73EF16022364E17970BAB = { isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Folio.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		2183D5FDC74DD4F54C326D52 = { isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FolioTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		2E178DBE59F146821EDD0303 = { isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FolioLogicTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6347A7844C008A3D6DEABF75 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppModel.swift; path = "Folio/App/AppModel.swift"; sourceTree = SOURCE_ROOT; };
+		BA4DC1AAFFE617979FB52F45 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolioApp.swift; path = "Folio/App/FolioApp.swift"; sourceTree = SOURCE_ROOT; };
+		2699BAC6366F32D328734FC5 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Motion.swift; path = "Folio/DesignSystem/Motion.swift"; sourceTree = SOURCE_ROOT; };
+		A5C209BC0AE1C8D684B0F526 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Styles.swift; path = "Folio/DesignSystem/Styles.swift"; sourceTree = SOURCE_ROOT; };
+		6077BADD58F0A7B4EC6C1D9B = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Theme.swift; path = "Folio/DesignSystem/Theme.swift"; sourceTree = SOURCE_ROOT; };
+		DA4FC7B141D3CD86E8F58E00 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = InspectorView.swift; path = "Folio/Features/Inspector/InspectorView.swift"; sourceTree = SOURCE_ROOT; };
+		75BAB663C9800C722DA909E9 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ToolInspectors.swift; path = "Folio/Features/Inspector/ToolInspectors.swift"; sourceTree = SOURCE_ROOT; };
+		D3E5DA913409D85C2A2C8799 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = EmptyStateView.swift; path = "Folio/Features/Library/EmptyStateView.swift"; sourceTree = SOURCE_ROOT; };
+		0F761282C94D4532174BDF04 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ContentView.swift; path = "Folio/Features/Main/ContentView.swift"; sourceTree = SOURCE_ROOT; };
+		46161F1DBBF1A4113DCBF60A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CommandPalette.swift; path = "Folio/Features/Palette/CommandPalette.swift"; sourceTree = SOURCE_ROOT; };
+		CB80E448FD517B38429BFE5A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SettingsView.swift; path = "Folio/Features/Settings/SettingsView.swift"; sourceTree = SOURCE_ROOT; };
+		F993CF9E9B24995B1F3D4E4F = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = SidebarView.swift; path = "Folio/Features/Sidebar/SidebarView.swift"; sourceTree = SOURCE_ROOT; };
+		A4FB3AC73DA4CD2FBCBEB8C8 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageTrayView.swift; path = "Folio/Features/Stage/PageTrayView.swift"; sourceTree = SOURCE_ROOT; };
+		2626A39AB7DA890A68BC0918 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReaderView.swift; path = "Folio/Features/Stage/ReaderView.swift"; sourceTree = SOURCE_ROOT; };
+		C9A4B2BE18CA6604BBEE537E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StageView.swift; path = "Folio/Features/Stage/StageView.swift"; sourceTree = SOURCE_ROOT; };
+		E1CA5093590F83101FA84851 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = L10n.swift; path = "Folio/Localization/L10n.swift"; sourceTree = SOURCE_ROOT; };
+		B04052FEB913B84EB07F4F6C = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ExportOptions.swift; path = "Folio/Models/ExportOptions.swift"; sourceTree = SOURCE_ROOT; };
+		1F4DFA8AE13B20ABB57DCA46 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Filename.swift; path = "Folio/Models/Filename.swift"; sourceTree = SOURCE_ROOT; };
+		CE15EC239A9B2550E1E038A3 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FolioError.swift; path = "Folio/Models/FolioError.swift"; sourceTree = SOURCE_ROOT; };
+		E6EF2CA0B6E6EAD3489D0515 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PageRef.swift; path = "Folio/Models/PageRef.swift"; sourceTree = SOURCE_ROOT; };
+		D218BDDC5104E1CA6BBA9E2E = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RangeParser.swift; path = "Folio/Models/RangeParser.swift"; sourceTree = SOURCE_ROOT; };
+		ED766E59DA2E9A828DFF50C5 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = Tool.swift; path = "Folio/Models/Tool.swift"; sourceTree = SOURCE_ROOT; };
+		CEE083A5405A42135B74FF12 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WorkspaceNavigation.swift; path = "Folio/Models/WorkspaceNavigation.swift"; sourceTree = SOURCE_ROOT; };
+		8BD58F946D5ADB35A5AAF245 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WorkspaceState.swift; path = "Folio/Models/WorkspaceState.swift"; sourceTree = SOURCE_ROOT; };
+		5944B97187A879C4EA8F89A7 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = CompressService.swift; path = "Folio/Services/CompressService.swift"; sourceTree = SOURCE_ROOT; };
+		B667DDCCEBA74D01A2C3ACC9 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ImageConvertService.swift; path = "Folio/Services/ImageConvertService.swift"; sourceTree = SOURCE_ROOT; };
+		07338CA3C3513E270022CEA4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = OCRService.swift; path = "Folio/Services/OCRService.swift"; sourceTree = SOURCE_ROOT; };
+		90F11525F7E97540557233DA = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFBuilder.swift; path = "Folio/Services/PDFBuilder.swift"; sourceTree = SOURCE_ROOT; };
+		35376ED76D89543D112D0221 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFIO.swift; path = "Folio/Services/PDFIO.swift"; sourceTree = SOURCE_ROOT; };
+		F358A1FA004088B4420E4DC8 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFPageGraphics.swift; path = "Folio/Services/PDFPageGraphics.swift"; sourceTree = SOURCE_ROOT; };
+		056F7577694FC87F4815B60C = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFPageIsolation.swift; path = "Folio/Services/PDFPageIsolation.swift"; sourceTree = SOURCE_ROOT; };
+		632F412C1F2424E29C403AFB = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReadDocumentBuilder.swift; path = "Folio/Services/ReadDocumentBuilder.swift"; sourceTree = SOURCE_ROOT; };
+		90FFBD67538C54B856E36159 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RecentsStore.swift; path = "Folio/Services/RecentsStore.swift"; sourceTree = SOURCE_ROOT; };
+		994E6552F80D81F5627BA1C4 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RedactService.swift; path = "Folio/Services/RedactService.swift"; sourceTree = SOURCE_ROOT; };
+		E359A8B6F85655452F9DEF47 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = StampService.swift; path = "Folio/Services/StampService.swift"; sourceTree = SOURCE_ROOT; };
+		0ACB4E74CB32E090412C840D = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = TextService.swift; path = "Folio/Services/TextService.swift"; sourceTree = SOURCE_ROOT; };
+		4F629396CC06A68BECEFF11A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ThumbnailCache.swift; path = "Folio/Services/ThumbnailCache.swift"; sourceTree = SOURCE_ROOT; };
+		DAE201F35D85EE566EED720A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = FilenameTests.swift; path = "FolioTests/FilenameTests.swift"; sourceTree = SOURCE_ROOT; };
+		ABE32E6DA1AC7DEC82D5C502 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LicenseReadmeTests.swift; path = "FolioTests/LicenseReadmeTests.swift"; sourceTree = SOURCE_ROOT; };
+		1148B9F413C812F466C7B637 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = LocalizationTests.swift; path = "FolioTests/LocalizationTests.swift"; sourceTree = SOURCE_ROOT; };
+		387D6A8485C9158525693D60 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFBuilderTests.swift; path = "FolioTests/PDFBuilderTests.swift"; sourceTree = SOURCE_ROOT; };
+		D14F50E3EBAFFBFCB85274DB = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PDFExportPathTests.swift; path = "FolioTests/PDFExportPathTests.swift"; sourceTree = SOURCE_ROOT; };
+		9C52AB6E5B0172364CF3C0A6 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = RangeParserTests.swift; path = "FolioTests/RangeParserTests.swift"; sourceTree = SOURCE_ROOT; };
+		97962BF67D3BA03CF4728517 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ReadAndNavTests.swift; path = "FolioTests/ReadAndNavTests.swift"; sourceTree = SOURCE_ROOT; };
+		3483D0627A65398CAA17F665 = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = WorkspaceTests.swift; path = "FolioTests/WorkspaceTests.swift"; sourceTree = SOURCE_ROOT; };
+		704605349B4D7C59A508D42A = { isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = ProtectWriteTests.swift; path = "FolioLogicTests/ProtectWriteTests.swift"; sourceTree = SOURCE_ROOT; };
+		80949042D772EE097E06AB7F = { isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Folio/Resources/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
+		01A9832162F9BD29AC6E960F = { isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; name = Localizable.xcstrings; path = "Folio/Localization/Localizable.xcstrings"; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXBuildFile section */
+		E53B127D1FD04A69061B8663 = { isa = PBXBuildFile; fileRef = 6347A7844C008A3D6DEABF75; };
+		A2965D29F759A93C3FCE53CE = { isa = PBXBuildFile; fileRef = BA4DC1AAFFE617979FB52F45; };
+		B4E8CC087395497B0BAA5B55 = { isa = PBXBuildFile; fileRef = 2699BAC6366F32D328734FC5; };
+		819F02D7CBD44AB4F8BB81C6 = { isa = PBXBuildFile; fileRef = A5C209BC0AE1C8D684B0F526; };
+		977886300556EB403C925AED = { isa = PBXBuildFile; fileRef = 6077BADD58F0A7B4EC6C1D9B; };
+		992B60A61EEC010B6A7EE487 = { isa = PBXBuildFile; fileRef = DA4FC7B141D3CD86E8F58E00; };
+		AAE7725529763E905576B893 = { isa = PBXBuildFile; fileRef = 75BAB663C9800C722DA909E9; };
+		E486A027A9DF5E1A2A7413C4 = { isa = PBXBuildFile; fileRef = D3E5DA913409D85C2A2C8799; };
+		EEA7B66EAB356EE40DB0F87A = { isa = PBXBuildFile; fileRef = 0F761282C94D4532174BDF04; };
+		1DFE829443E11888326CE5E8 = { isa = PBXBuildFile; fileRef = 46161F1DBBF1A4113DCBF60A; };
+		9D3B8DD5BCDE8B9B053D90D1 = { isa = PBXBuildFile; fileRef = CB80E448FD517B38429BFE5A; };
+		2CCC58980A51D8604C7F688B = { isa = PBXBuildFile; fileRef = F993CF9E9B24995B1F3D4E4F; };
+		65B45F9A928532751CC6785D = { isa = PBXBuildFile; fileRef = A4FB3AC73DA4CD2FBCBEB8C8; };
+		527E2B3B99D6C663A5FF0043 = { isa = PBXBuildFile; fileRef = 2626A39AB7DA890A68BC0918; };
+		4B944747ECB521AF57179740 = { isa = PBXBuildFile; fileRef = C9A4B2BE18CA6604BBEE537E; };
+		3243B82895B791AF4C54DE26 = { isa = PBXBuildFile; fileRef = E1CA5093590F83101FA84851; };
+		2BABB2DDAAB9395BB795802E = { isa = PBXBuildFile; fileRef = B04052FEB913B84EB07F4F6C; };
+		A0B3C04AADADB622377D25BF = { isa = PBXBuildFile; fileRef = 1F4DFA8AE13B20ABB57DCA46; };
+		A2C3A67FD44C84ECA3F05312 = { isa = PBXBuildFile; fileRef = CE15EC239A9B2550E1E038A3; };
+		0AD051146E7B7522F5D4FB5B = { isa = PBXBuildFile; fileRef = E6EF2CA0B6E6EAD3489D0515; };
+		AD989CDBC53BEB1F8B8E094D = { isa = PBXBuildFile; fileRef = D218BDDC5104E1CA6BBA9E2E; };
+		8E8E4DFB1F8CFF2E5B279A6C = { isa = PBXBuildFile; fileRef = ED766E59DA2E9A828DFF50C5; };
+		9D54E13E21EECF7F68F09E52 = { isa = PBXBuildFile; fileRef = CEE083A5405A42135B74FF12; };
+		2B5C5463F1C7756CF19708DD = { isa = PBXBuildFile; fileRef = 8BD58F946D5ADB35A5AAF245; };
+		8B91699D70183528C25E54C6 = { isa = PBXBuildFile; fileRef = 5944B97187A879C4EA8F89A7; };
+		EDF5B551B82A027F33FE955F = { isa = PBXBuildFile; fileRef = B667DDCCEBA74D01A2C3ACC9; };
+		EFC8CE5553067A69D3D5B35E = { isa = PBXBuildFile; fileRef = 07338CA3C3513E270022CEA4; };
+		E1DFAC1AA38117537948AE68 = { isa = PBXBuildFile; fileRef = 90F11525F7E97540557233DA; };
+		0E6E37C7A276152EA211D4D8 = { isa = PBXBuildFile; fileRef = 35376ED76D89543D112D0221; };
+		A1240544A9C63DCD3CE17CCC = { isa = PBXBuildFile; fileRef = F358A1FA004088B4420E4DC8; };
+		EDDDBDD4A3BE668A47D6B9EB = { isa = PBXBuildFile; fileRef = 056F7577694FC87F4815B60C; };
+		6425864B30D1DC59B6AD6571 = { isa = PBXBuildFile; fileRef = 632F412C1F2424E29C403AFB; };
+		C72C43247CD3DC2E90CDF7EB = { isa = PBXBuildFile; fileRef = 90FFBD67538C54B856E36159; };
+		975943B4B0EAC1AE4D1E1BE5 = { isa = PBXBuildFile; fileRef = 994E6552F80D81F5627BA1C4; };
+		50759340DC0F26AB60D7CFE8 = { isa = PBXBuildFile; fileRef = E359A8B6F85655452F9DEF47; };
+		7B1D46C9C6C27F56AD650564 = { isa = PBXBuildFile; fileRef = 0ACB4E74CB32E090412C840D; };
+		C306F749B37ECA94FB4A25A9 = { isa = PBXBuildFile; fileRef = 4F629396CC06A68BECEFF11A; };
+		EEB6D58C04CF3490AEE70456 = { isa = PBXBuildFile; fileRef = DAE201F35D85EE566EED720A; };
+		EF2AEDA17157A2D2E0480109 = { isa = PBXBuildFile; fileRef = ABE32E6DA1AC7DEC82D5C502; };
+		188806974AB3998F8A41F83C = { isa = PBXBuildFile; fileRef = 1148B9F413C812F466C7B637; };
+		0985637ED6FE470F4FAD71CC = { isa = PBXBuildFile; fileRef = 387D6A8485C9158525693D60; };
+		EA5DABA2B6F4CECEAFEBEB7E = { isa = PBXBuildFile; fileRef = D14F50E3EBAFFBFCB85274DB; };
+		342AAD607C91F33BB69C7A6B = { isa = PBXBuildFile; fileRef = 9C52AB6E5B0172364CF3C0A6; };
+		3784F6A347418342280132D9 = { isa = PBXBuildFile; fileRef = 97962BF67D3BA03CF4728517; };
+		1A4F254A99B0493DAB2DB49D = { isa = PBXBuildFile; fileRef = 3483D0627A65398CAA17F665; };
+		7DF181009FB320F62BF4B048 = { isa = PBXBuildFile; fileRef = 704605349B4D7C59A508D42A; };
+		52C1E59CEBB67DB717F2104C = { isa = PBXBuildFile; fileRef = CE15EC239A9B2550E1E038A3; };
+		6ECF5B3160B33E93FF3F145E = { isa = PBXBuildFile; fileRef = B04052FEB913B84EB07F4F6C; };
+		233775138E056FF9FC8B51B8 = { isa = PBXBuildFile; fileRef = E6EF2CA0B6E6EAD3489D0515; };
+		C7532497309E1DF4E6B4B66D = { isa = PBXBuildFile; fileRef = F358A1FA004088B4420E4DC8; };
+		59799541797C1D002718B7D4 = { isa = PBXBuildFile; fileRef = 35376ED76D89543D112D0221; };
+		019EE0E90A38D1B9E074E702 = { isa = PBXBuildFile; fileRef = 80949042D772EE097E06AB7F; };
+		3D8957F918D06DDF0D8A131B = { isa = PBXBuildFile; fileRef = 01A9832162F9BD29AC6E960F; };
+/* End PBXBuildFile section */
+
+/* Begin PBXGroup section */
+		0F3F106D6B143381DD1FFA3D = { isa = PBXGroup; children = ( 6347A7844C008A3D6DEABF75, BA4DC1AAFFE617979FB52F45, 2699BAC6366F32D328734FC5, A5C209BC0AE1C8D684B0F526, 6077BADD58F0A7B4EC6C1D9B, DA4FC7B141D3CD86E8F58E00, 75BAB663C9800C722DA909E9, D3E5DA913409D85C2A2C8799, 0F761282C94D4532174BDF04, 46161F1DBBF1A4113DCBF60A, CB80E448FD517B38429BFE5A, F993CF9E9B24995B1F3D4E4F, A4FB3AC73DA4CD2FBCBEB8C8, 2626A39AB7DA890A68BC0918, C9A4B2BE18CA6604BBEE537E, E1CA5093590F83101FA84851, B04052FEB913B84EB07F4F6C, 1F4DFA8AE13B20ABB57DCA46, CE15EC239A9B2550E1E038A3, E6EF2CA0B6E6EAD3489D0515, D218BDDC5104E1CA6BBA9E2E, ED766E59DA2E9A828DFF50C5, CEE083A5405A42135B74FF12, 8BD58F946D5ADB35A5AAF245, 5944B97187A879C4EA8F89A7, B667DDCCEBA74D01A2C3ACC9, 07338CA3C3513E270022CEA4, 90F11525F7E97540557233DA, 35376ED76D89543D112D0221, F358A1FA004088B4420E4DC8, 056F7577694FC87F4815B60C, 632F412C1F2424E29C403AFB, 90FFBD67538C54B856E36159, 994E6552F80D81F5627BA1C4, E359A8B6F85655452F9DEF47, 0ACB4E74CB32E090412C840D, 4F629396CC06A68BECEFF11A ); name = Folio; sourceTree = "<group>"; };
+		754D651C5F55019F12758234 = { isa = PBXGroup; children = ( DAE201F35D85EE566EED720A, ABE32E6DA1AC7DEC82D5C502, 1148B9F413C812F466C7B637, 387D6A8485C9158525693D60, D14F50E3EBAFFBFCB85274DB, 9C52AB6E5B0172364CF3C0A6, 97962BF67D3BA03CF4728517, 3483D0627A65398CAA17F665 ); name = FolioTests; sourceTree = "<group>"; };
+		34BAD7266AE9A6F5A428ED4D = { isa = PBXGroup; children = ( 704605349B4D7C59A508D42A ); name = FolioLogicTests; sourceTree = "<group>"; };
+		452364E2DC8F4302669DEFF3 = { isa = PBXGroup; children = ( A7AB4C9C93D01C1A98FCAD09, 324BC8F72C7989D2213C22D6, 80949042D772EE097E06AB7F, 01A9832162F9BD29AC6E960F ); name = Resources; sourceTree = "<group>"; };
+		00C45FD35CB0F9C5F764F070 = { isa = PBXGroup; children = ( C3A73EF16022364E17970BAB, 2183D5FDC74DD4F54C326D52, 2E178DBE59F146821EDD0303 ); name = Products; sourceTree = "<group>"; };
+		ADCF10F76EBF2A74473E9DC4 = { isa = PBXGroup; children = ( 0F3F106D6B143381DD1FFA3D, 754D651C5F55019F12758234, 34BAD7266AE9A6F5A428ED4D, 452364E2DC8F4302669DEFF3, 00C45FD35CB0F9C5F764F070 ); sourceTree = "<group>"; };
+/* End PBXGroup section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6D2C1523C40DC9FD335FEEAE = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( E53B127D1FD04A69061B8663, A2965D29F759A93C3FCE53CE, B4E8CC087395497B0BAA5B55, 819F02D7CBD44AB4F8BB81C6, 977886300556EB403C925AED, 992B60A61EEC010B6A7EE487, AAE7725529763E905576B893, E486A027A9DF5E1A2A7413C4, EEA7B66EAB356EE40DB0F87A, 1DFE829443E11888326CE5E8, 9D3B8DD5BCDE8B9B053D90D1, 2CCC58980A51D8604C7F688B, 65B45F9A928532751CC6785D, 527E2B3B99D6C663A5FF0043, 4B944747ECB521AF57179740, 3243B82895B791AF4C54DE26, 2BABB2DDAAB9395BB795802E, A0B3C04AADADB622377D25BF, A2C3A67FD44C84ECA3F05312, 0AD051146E7B7522F5D4FB5B, AD989CDBC53BEB1F8B8E094D, 8E8E4DFB1F8CFF2E5B279A6C, 9D54E13E21EECF7F68F09E52, 2B5C5463F1C7756CF19708DD, 8B91699D70183528C25E54C6, EDF5B551B82A027F33FE955F, EFC8CE5553067A69D3D5B35E, E1DFAC1AA38117537948AE68, 0E6E37C7A276152EA211D4D8, A1240544A9C63DCD3CE17CCC, EDDDBDD4A3BE668A47D6B9EB, 6425864B30D1DC59B6AD6571, C72C43247CD3DC2E90CDF7EB, 975943B4B0EAC1AE4D1E1BE5, 50759340DC0F26AB60D7CFE8, 7B1D46C9C6C27F56AD650564, C306F749B37ECA94FB4A25A9 ); runOnlyForDeploymentPostprocessing = 0; };
+		970299B23036789C14DCEA38 = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( EEB6D58C04CF3490AEE70456, EF2AEDA17157A2D2E0480109, 188806974AB3998F8A41F83C, 0985637ED6FE470F4FAD71CC, EA5DABA2B6F4CECEAFEBEB7E, 342AAD607C91F33BB69C7A6B, 3784F6A347418342280132D9, 1A4F254A99B0493DAB2DB49D ); runOnlyForDeploymentPostprocessing = 0; };
+		42B23EDFD5BB518D8BE1EF7D = { isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = ( 7DF181009FB320F62BF4B048, 52C1E59CEBB67DB717F2104C, 6ECF5B3160B33E93FF3F145E, 233775138E056FF9FC8B51B8, C7532497309E1DF4E6B4B66D, 59799541797C1D002718B7D4 ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXResourcesBuildPhase section */
+		948756E4B49084A627CA0B9A = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( 019EE0E90A38D1B9E074E702, 3D8957F918D06DDF0D8A131B ); runOnlyForDeploymentPostprocessing = 0; };
+		314B4BAD576353C339D84A29 = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		3E8351F5CF0D31E51F8C9ECD = { isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		DC5E72DCDAFA3A0962FBEC53 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		96C8A1040BEA52B0A710C717 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+		3E27C6FC0A3CF684D9F11AC2 = { isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = ( ); runOnlyForDeploymentPostprocessing = 0; };
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		D4172F6E5EBFE002CD5F7DE7 = { isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; ENABLE_HARDENED_RUNTIME = YES; MACOSX_DEPLOYMENT_TARGET = 15.0; SDKROOT = macosx; SWIFT_VERSION = 6.0; SWIFT_STRICT_CONCURRENCY = complete; CODE_SIGN_STYLE = Automatic; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = dwarf; ENABLE_TESTABILITY = YES; GCC_OPTIMIZATION_LEVEL = 0; ONLY_ACTIVE_ARCH = YES; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug; };
+		C9CAF956A7C660E6865F2E2E = { isa = XCBuildConfiguration; buildSettings = { ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES; ENABLE_HARDENED_RUNTIME = YES; MACOSX_DEPLOYMENT_TARGET = 15.0; SDKROOT = macosx; SWIFT_VERSION = 6.0; SWIFT_STRICT_CONCURRENCY = complete; CODE_SIGN_STYLE = Automatic; COPY_PHASE_STRIP = NO; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; GCC_OPTIMIZATION_LEVEL = s; SWIFT_COMPILATION_MODE = wholemodule; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release; };
+		440E5A6917A92EC34723EB9D = { isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = Folio/Resources/Info.plist; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks"; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac; PRODUCT_NAME = Folio; ENABLE_HARDENED_RUNTIME = YES; CODE_SIGN_STYLE = Automatic; ENABLE_APP_SANDBOX = YES; SWIFT_EMIT_LOC_STRINGS = YES; CODE_SIGN_ENTITLEMENTS = Folio/Resources/FolioDebug.entitlements; ENABLE_APP_SANDBOX = NO; }; name = Debug; };
+		82FD79508EEAC699C8B01C6C = { isa = XCBuildConfiguration; buildSettings = { ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; COMBINE_HIDPI_IMAGES = YES; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = NO; INFOPLIST_FILE = Folio/Resources/Info.plist; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks"; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac; PRODUCT_NAME = Folio; ENABLE_HARDENED_RUNTIME = YES; CODE_SIGN_STYLE = Automatic; ENABLE_APP_SANDBOX = YES; SWIFT_EMIT_LOC_STRINGS = YES; CODE_SIGN_ENTITLEMENTS = Folio/Resources/Folio.entitlements; }; name = Release; };
+		A9EAA93E499DF2C43A46B515 = { isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac.tests; PRODUCT_NAME = FolioTests; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Folio.app/Contents/MacOS/Folio"; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks"; MACOSX_DEPLOYMENT_TARGET = 15.0; }; name = Debug; };
+		34E15607A758B3F33642AC11 = { isa = XCBuildConfiguration; buildSettings = { BUNDLE_LOADER = "$(TEST_HOST)"; GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac.tests; PRODUCT_NAME = FolioTests; TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Folio.app/Contents/MacOS/Folio"; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks"; MACOSX_DEPLOYMENT_TARGET = 15.0; }; name = Release; };
+		C8390C10E41B4522BDBB842C = { isa = XCBuildConfiguration; buildSettings = { GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac.logictests; PRODUCT_NAME = FolioLogicTests; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks"; MACOSX_DEPLOYMENT_TARGET = 15.0; FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks"; CODE_SIGNING_ALLOWED = NO; }; name = Debug; };
+		0C997C16575106F8972666EE = { isa = XCBuildConfiguration; buildSettings = { GENERATE_INFOPLIST_FILE = YES; PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac.logictests; PRODUCT_NAME = FolioLogicTests; LD_RUNPATH_SEARCH_PATHS = "$(inherited) @loader_path/../Frameworks"; MACOSX_DEPLOYMENT_TARGET = 15.0; FRAMEWORK_SEARCH_PATHS = "$(inherited) $(PLATFORM_DIR)/Developer/Library/Frameworks"; CODE_SIGNING_ALLOWED = NO; }; name = Release; };
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6D6194B745F9FCF78E19905D = { isa = XCConfigurationList; buildConfigurations = ( D4172F6E5EBFE002CD5F7DE7, C9CAF956A7C660E6865F2E2E ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		8A4C137FDF67CE32F42E0D24 = { isa = XCConfigurationList; buildConfigurations = ( 440E5A6917A92EC34723EB9D, 82FD79508EEAC699C8B01C6C ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		CA25E31FA3A46B2171497E0D = { isa = XCConfigurationList; buildConfigurations = ( A9EAA93E499DF2C43A46B515, 34E15607A758B3F33642AC11 ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+		9A9D08ACEFAA321FC99CC452 = { isa = XCConfigurationList; buildConfigurations = ( C8390C10E41B4522BDBB842C, 0C997C16575106F8972666EE ); defaultConfigurationIsVisible = 0; defaultConfigurationName = Debug; };
+/* End XCConfigurationList section */
+
+/* Begin PBXNativeTarget section */
+		29C7B681C8D62CBAC94D51C0 = { isa = PBXNativeTarget; buildConfigurationList = 8A4C137FDF67CE32F42E0D24; buildPhases = ( 6D2C1523C40DC9FD335FEEAE, DC5E72DCDAFA3A0962FBEC53, 948756E4B49084A627CA0B9A ); buildRules = ( ); dependencies = ( ); name = Folio; productName = Folio; productReference = C3A73EF16022364E17970BAB; productType = "com.apple.product-type.application"; };
+		7EC8F98B7A265120217712DE = { isa = PBXNativeTarget; buildConfigurationList = CA25E31FA3A46B2171497E0D; buildPhases = ( 970299B23036789C14DCEA38, 96C8A1040BEA52B0A710C717, 314B4BAD576353C339D84A29 ); buildRules = ( ); dependencies = ( 6D0546F5923B0110C6BB2B63 ); name = FolioTests; productName = FolioTests; productReference = 2183D5FDC74DD4F54C326D52; productType = "com.apple.product-type.bundle.unit-test"; };
+		741810AC393BF60CD45C1DFD = { isa = PBXNativeTarget; buildConfigurationList = 9A9D08ACEFAA321FC99CC452; buildPhases = ( 42B23EDFD5BB518D8BE1EF7D, 3E27C6FC0A3CF684D9F11AC2, 3E8351F5CF0D31E51F8C9ECD ); buildRules = ( ); dependencies = ( ); name = FolioLogicTests; productName = FolioLogicTests; productReference = 2E178DBE59F146821EDD0303; productType = "com.apple.product-type.bundle.unit-test"; };
+/* End PBXNativeTarget section */
+
+/* Begin PBXContainerItemProxy section */
+		D36D33020B6BB89396BD1B34 = { isa = PBXContainerItemProxy; containerPortal = 98F54143AB4E86B28C3AFEE0; proxyType = 1; remoteGlobalIDString = 29C7B681C8D62CBAC94D51C0; remoteInfo = Folio; };
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXTargetDependency section */
+		6D0546F5923B0110C6BB2B63 = { isa = PBXTargetDependency; target = 29C7B681C8D62CBAC94D51C0; targetProxy = D36D33020B6BB89396BD1B34; };
+/* End PBXTargetDependency section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 = { isa = PBXProject; attributes = { BuildIndependentTargetsInParallel = 1; LastSwiftUpdateCheck = 2600; LastUpgradeCheck = 2600; }; buildConfigurationList = 6D6194B745F9FCF78E19905D; compatibilityVersion = "Xcode 15.0"; developmentRegion = en; hasScannedForEncodings = 0; knownRegions = ( en, es, fr, de, it, pt-BR, pt-PT, nl, da, sv, nb, fi, pl, cs, hu, ro, el, tr, ru, uk, ar, he, hi, th, vi, id, ja, ko, zh-Hans, zh-Hant, Base ); mainGroup = ADCF10F76EBF2A74473E9DC4; productRefGroup = 00C45FD35CB0F9C5F764F070; projectDirPath = ""; projectRoot = ""; targets = ( 29C7B681C8D62CBAC94D51C0, 7EC8F98B7A265120217712DE, 741810AC393BF60CD45C1DFD ); };
+/* End PBXProject section */
+
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0;
+}

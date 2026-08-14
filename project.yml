@@ -1,0 +1,45 @@
+name: Folio
+options:
+  bundleIdPrefix: app.folio
+  deploymentTarget:
+    macOS: "15.0"
+  createIntermediateGroups: true
+settings:
+  base:
+    SWIFT_VERSION: "6.0"
+    MACOSX_DEPLOYMENT_TARGET: "15.0"
+    ENABLE_HARDENED_RUNTIME: YES
+    SWIFT_STRICT_CONCURRENCY: complete
+targets:
+  Folio:
+    type: application
+    platform: macOS
+    sources:
+      - path: Folio
+        excludes:
+          - Resources/Info.plist
+          - Resources/Folio.entitlements
+    resources:
+      - path: Folio/Resources/Assets.xcassets
+      - path: Folio/Localization/Localizable.xcstrings
+    settings:
+      base:
+        PRODUCT_NAME: Folio
+        PRODUCT_BUNDLE_IDENTIFIER: app.folio.mac
+        INFOPLIST_FILE: Folio/Resources/Info.plist
+        GENERATE_INFOPLIST_FILE: NO
+        CODE_SIGN_ENTITLEMENTS: Folio/Resources/Folio.entitlements
+        MARKETING_VERSION: "1.0"
+        CURRENT_PROJECT_VERSION: 1
+  FolioTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - FolioTests
+    dependencies:
+      - target: Folio
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: app.folio.mac.tests
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/Folio.app/Contents/MacOS/Folio"
+        BUNDLE_LOADER: "$(TEST_HOST)"
