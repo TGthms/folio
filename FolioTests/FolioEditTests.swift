@@ -69,6 +69,43 @@ final class FolioEditTests: XCTestCase {
         XCTAssertEqual(bounds.height, 280, accuracy: 2)
     }
 
+    func testReaderScrollDoesNotJumpWhenFocusMatchesVisiblePage() {
+        XCTAssertFalse(ReaderFocusPolicy.shouldJump(to: 3, lastVisible: 3, lastApplied: 1))
+        XCTAssertFalse(ReaderFocusPolicy.shouldJump(to: 2, lastVisible: 2, lastApplied: 2))
+        XCTAssertTrue(ReaderFocusPolicy.shouldJump(to: 2, lastVisible: 1, lastApplied: 1))
+        XCTAssertTrue(ReaderFocusPolicy.shouldJump(to: 0, lastVisible: -1, lastApplied: -1))
+    }
+
+    func testReaderPageIndexLookup() {
+        let ids = [UUID(), UUID(), UUID()]
+        XCTAssertEqual(ReaderPageIndex.id(at: 1, in: ids), ids[1])
+        XCTAssertNil(ReaderPageIndex.id(at: 9, in: ids))
+        XCTAssertEqual(ReaderPageIndex.index(of: ids[2], in: ids), 2)
+    }
+
+    func testRevealFromReaderKeepsMultiSelection() {
+        let model = AppModel()
+        model.workspace.append((0..<4).map { _ in PageRef(source: .blank(size: CGSize(width: 10, height: 10))) })
+        let ids = model.workspace.pages.map(\.id)
+        model.workspace.selectedIDs = Set(ids)
+        model.workspace.focusedID = ids[0]
+        model.revealPageFromReader(ids[2])
+        XCTAssertEqual(model.workspace.focusedID, ids[2])
+        XCTAssertEqual(model.workspace.selectedIDs, Set(ids))
+    }
+
+    func testSelectingEditAgainDoesNotForceReadIfUserLeft() {
+        let model = AppModel()
+        model.workspace.append([PageRef(source: .blank(size: CGSize(width: 10, height: 10)))])
+        model.selectTool(.merge)
+        model.stageMode = .pages
+        model.selectTool(.edit)
+        XCTAssertEqual(model.stageMode, .read)
+        model.stageMode = .pages
+        model.selectTool(.edit)
+        XCTAssertEqual(model.stageMode, .pages)
+    }
+
     func testSaveDoesNotWriteUntilDestinationIsChosen() async throws {
         let model = AppModel()
         let url = try writeFixture(name: "SAVE", pages: 1)

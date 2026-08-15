@@ -230,11 +230,19 @@ final class AppModel: ObservableObject {
     }
 
     func selectTool(_ next: Tool) {
+        let enteringEdit = next == .edit && tool != .edit
         withAnimation(FolioMotion.snap) {
             tool = next
-            if next == .edit, !workspace.pages.isEmpty {
+            if enteringEdit, !workspace.pages.isEmpty {
                 stageMode = .read
             }
+        }
+    }
+
+    /// Scroll in Read only moves the focus ring. It must not wipe a multi-page selection.
+    func revealPageFromReader(_ id: UUID) {
+        if workspace.focusedID != id {
+            workspace.focusedID = id
         }
     }
 

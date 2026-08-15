@@ -51,18 +51,22 @@ struct ToolInspectors: View {
             Text(L10n.t("edit.help"))
                 .font(.system(size: 12))
                 .foregroundStyle(.secondary)
+                .fixedSize(horizontal: false, vertical: true)
             Picker(L10n.t("tool.edit"), selection: $model.options.editMark) {
                 ForEach(EditMarkKind.allCases) { kind in
                     Text(L10n.t(kind.titleKey)).tag(kind)
                 }
             }
-            Button(L10n.t("edit.crop")) { model.cropSelected() }
-            Button(L10n.t("edit.clearCrop")) { model.clearCropOnSelection() }
-            Button(L10n.t("edit.replaceImage")) { model.replaceSelectedPageWithImage() }
-            Button(L10n.t("edit.clearMarks")) { model.clearMarksOnSelection() }
+            .pickerStyle(.radioGroup)
+            VStack(alignment: .leading, spacing: 8) {
+                Button(L10n.t("edit.crop")) { model.cropSelected() }
+                Button(L10n.t("edit.clearCrop")) { model.clearCropOnSelection() }
+                Button(L10n.t("edit.replaceImage")) { model.replaceSelectedPageWithImage() }
+                Button(L10n.t("edit.clearMarks")) { model.clearMarksOnSelection() }
+            }
+            .buttonStyle(.bordered)
+            .controlSize(.small)
         }
-        .buttonStyle(.bordered)
-        .controlSize(.small)
     }
 
     private var pagesOps: some View {

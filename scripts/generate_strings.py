@@ -176,7 +176,7 @@ EN = {
     "nav.first": "First Page",
     "nav.last": "Last Page",
     "nav.selectAll": "Select All Pages",
-    "edit.help": "Add marks on the page in Read, then Save. Crop and replace apply to the selected pages.",
+    "edit.help": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file.",
     "edit.highlight": "Highlight",
     "edit.underline": "Underline",
     "edit.textBox": "Text box",
@@ -367,13 +367,13 @@ PATCH = {
         loc: EN["edit.help"]
         for loc in LOCALES if loc not in ("en", "Base")
     } | {
-        "zh-Hans": "在阅读模式中给页面加标记，然后存储。裁剪和替换作用于所选页面。",
-        "zh-Hant": "在閱讀模式中為頁面加上標記，然後儲存。裁剪與取代套用到所選頁面。",
-        "ja": "読みモードでページにマークを付けてから保存します。トリミングと置き換えは選択したページに適用されます。",
-        "ko": "읽기 모드에서 페이지에 표시한 뒤 저장하세요. 자르기와 바꾸기는 선택한 페이지에 적용됩니다.",
-        "fr": "Ajoutez des marques en mode Lecture, puis enregistrez. Recadrage et remplacement s’appliquent aux pages sélectionnées.",
-        "de": "Markieren Sie Seiten in Lesen und sichern Sie. Zuschneiden und Ersetzen gelten für die Auswahl.",
-        "es": "Añada marcas en Lectura y guarde. Recortar y reemplazar se aplican a las páginas seleccionadas.",
+        "zh-Hans": "像平常一样滚动文档。拖拽即可在指针所在页面加上所选标记。存储会把标记写入文件。",
+        "zh-Hant": "像平常一樣捲動文件。拖曳即可在指標所在頁面加上所選標記。儲存會把標記寫入檔案。",
+        "ja": "いつもどおりスクロールできます。ドラッグすると、ポインタ下のページに選んだマークが付きます。保存でファイルに書き込みます。",
+        "ko": "문서는 평소처럼 스크롤하세요. 드래그하면 포인터 아래 페이지에 선택한 표시가 붙습니다. 저장하면 파일에 씁니다.",
+        "fr": "Faites défiler le document comme d’habitude. Faites glisser pour ajouter la marque sur la page sous le pointeur. Enregistrer écrit les marques dans le fichier.",
+        "de": "Rollen Sie das Dokument wie gewohnt. Ziehen Sie, um die Markierung auf der Seite unter dem Zeiger zu setzen. Sichern schreibt die Markierungen in die Datei.",
+        "es": "Desplace el documento con normalidad. Arrastre para añadir la marca en la página bajo el puntero. Guardar escribe las marcas en el archivo.",
     },
     "edit.highlight": {
         "es": "Resaltar", "fr": "Surligner", "de": "Hervorheben", "it": "Evidenzia",
