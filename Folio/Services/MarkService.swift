@@ -2,30 +2,48 @@ import AppKit
 import PDFKit
 
 enum MarkService {
+    static func apply(_ page: PDFPage, marks: [PageMark], crop: CGRect?, flatten: Bool) -> PDFPage {
+        if flatten {
+            return burn(page, marks: marks, crop: crop)
+        }
+        let media = page.bounds(for: .mediaBox)
+        var result = page
+        var live = marks
+        if let crop {
+            let clip = crop.intersection(media)
+            result = PDFPageGraphics.crop(result, to: clip)
+            live = shifted(marks, by: CGPoint(x: -clip.minX, y: -clip.minY))
+        }
+        AnnotationService.sync(page: result, marks: live, crop: nil)
+        return result
+    }
+
     static func burn(_ page: PDFPage, marks: [PageMark], crop: CGRect?) -> PDFPage {
         guard !marks.isEmpty || crop != nil else { return page }
-        let bounds = page.bounds(for: .mediaBox)
-        let scale: CGFloat = 2
-        let pixelSize = CGSize(width: max(1, bounds.width * scale), height: max(1, bounds.height * scale))
-        let image = NSImage(size: pixelSize)
-        image.lockFocus()
-        if let ctx = NSGraphicsContext.current?.cgContext {
-            ctx.saveGState()
-            ctx.scaleBy(x: scale, y: scale)
-            ctx.translateBy(x: -bounds.origin.x, y: -bounds.origin.y)
-            if let crop {
-                ctx.clip(to: crop.intersection(bounds))
+        let media = page.bounds(for: .mediaBox)
+        var result = page
+        if !marks.isEmpty {
+            result = PDFPageGraphics.redraw(result) { ctx, _ in
+                for mark in marks {
+                    draw(mark, in: ctx, bounds: media)
+                }
             }
-            page.draw(with: .mediaBox, to: ctx)
-            for mark in marks {
-                draw(mark, in: ctx, bounds: bounds)
-            }
-            ctx.restoreGState()
         }
-        image.unlockFocus()
-        let canvas = crop?.intersection(bounds).size ?? bounds.size
-        let drawn = PDFPageGraphics.pageFromImage(image, canvas: canvas)
-        return drawn
+        if let crop {
+            result = PDFPageGraphics.crop(result, to: crop.intersection(media))
+        }
+        return result
+    }
+
+    static func shifted(_ marks: [PageMark], by delta: CGPoint) -> [PageMark] {
+        marks.map { mark in
+            var next = mark
+            next.rect = next.rect.offsetBy(dx: delta.x, dy: delta.y)
+            if !next.points.isEmpty {
+                next.points = next.points.map { CGPoint(x: $0.x + delta.x, y: $0.y + delta.y) }
+            }
+            return next
+        }
     }
 
     private static func draw(_ mark: PageMark, in ctx: CGContext, bounds: CGRect) {

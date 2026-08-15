@@ -125,6 +125,21 @@ struct WorkspaceState: Equatable, Sendable {
         return removed
     }
 
+    @discardableResult
+    mutating func replaceMark(_ mark: PageMark) -> Bool {
+        for index in pages.indices {
+            if let markIndex = pages[index].marks.firstIndex(where: { $0.id == mark.id }) {
+                pages[index].marks[markIndex] = mark
+                return true
+            }
+        }
+        return false
+    }
+
+    func mark(id: UUID) -> PageMark? {
+        pages.lazy.flatMap(\.marks).first { $0.id == id }
+    }
+
     mutating func selectAll() {
         selectedIDs = Set(pages.map(\.id))
     }

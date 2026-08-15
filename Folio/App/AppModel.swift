@@ -6,7 +6,7 @@ import UniformTypeIdentifiers
 @MainActor
 final class AppModel: ObservableObject {
     @Published var workspace = WorkspaceState()
-    @Published var tool: Tool = .merge
+    @Published var tool: Tool = .pages
     @Published var stageMode: StageMode = .pages
     @Published var inspectorVisible = true
     @Published var options = ExportOptions()
@@ -69,17 +69,27 @@ final class AppModel: ObservableObject {
             workspaceEpoch += 1
         }
         undoManager?.registerUndo(withTarget: self) { target in
-            Task { @MainActor in
+            let apply = {
                 let current = target.workspace
                 let currentEpoch = target.workspaceEpoch
                 target.workspace = snapshot
                 target.workspaceEpoch = previousEpoch
                 target.undoManager?.registerUndo(withTarget: target) { inner in
-                    Task { @MainActor in
+                    let redo = {
                         inner.workspace = current
                         inner.workspaceEpoch = currentEpoch
                     }
+                    if Thread.isMainThread {
+                        redo()
+                    } else {
+                        DispatchQueue.main.async(execute: redo)
+                    }
                 }
+            }
+            if Thread.isMainThread {
+                apply()
+            } else {
+                DispatchQueue.main.async(execute: apply)
             }
         }
     }
@@ -91,26 +101,33 @@ final class AppModel: ObservableObject {
 
     /// Shipped open/import: load every page into the workspace; never writes the source.
     func importURLsAsync(_ urls: [URL]) async {
+        let openingFresh = workspace.pages.isEmpty
+        if openingFresh {
+            sourceWasEncrypted = false
+        }
         for url in urls {
             _ = url.startAccessingSecurityScopedResource()
             if ImageConvertService.isPDF(url) {
-                await importPDF(url)
+                await importPDF(url, markDirty: !openingFresh)
             } else if ImageConvertService.isImage(url) {
-                importImage(url)
+                importImage(url, markDirty: !openingFresh)
             }
             rememberRecent(url)
         }
         refreshSourceBytes()
+        if openingFresh, !workspace.pages.isEmpty {
+            stageMode = .read
+        }
     }
 
-    private func importPDF(_ url: URL) async {
+    private func importPDF(_ url: URL, markDirty: Bool) async {
         do {
             let document = try PDFIO.document(at: url)
             var imported: [PageRef] = []
             for index in 0..<document.pageCount {
                 imported.append(PageRef(source: .pdf(url: url, pageIndex: index)))
             }
-            registerUndo(markDirty: false)
+            registerUndo(markDirty: markDirty)
             workspace.append(imported)
         } catch FolioError.encrypted {
             sourceWasEncrypted = true
@@ -120,8 +137,8 @@ final class AppModel: ObservableObject {
         }
     }
 
-    private func importImage(_ url: URL) {
-        registerUndo(markDirty: false)
+    private func importImage(_ url: URL, markDirty: Bool) {
+        registerUndo(markDirty: markDirty)
         workspace.append([PageRef(source: .image(url: url))])
     }
 
@@ -129,7 +146,14 @@ final class AppModel: ObservableObject {
         guard let prompt = passwordPrompt else { return }
         PDFIO.rememberPassword(prompt.password, for: prompt.url)
         passwordPrompt = nil
-        Task { await importPDF(prompt.url) }
+        let openingFresh = workspace.pages.isEmpty
+        Task {
+            await importPDF(prompt.url, markDirty: !openingFresh)
+            refreshSourceBytes()
+            if openingFresh, !workspace.pages.isEmpty {
+                stageMode = .read
+            }
+        }
     }
 
     func addFiles() {
@@ -271,6 +295,13 @@ final class AppModel: ObservableObject {
         selectedMarkID = mark.id
     }
 
+    func replaceMark(_ mark: PageMark) {
+        guard workspace.mark(id: mark.id) != nil else { return }
+        registerUndo()
+        _ = workspace.replaceMark(mark)
+        selectedMarkID = mark.id
+    }
+
     func cropSelected() {
         registerUndo()
         for id in workspace.effectiveSelection() {
@@ -314,27 +345,48 @@ final class AppModel: ObservableObject {
     }
 
     func saveDocument() {
+        guard let destination = prepareSaveDestination() else { return }
+        exportTask?.cancel()
+        exportTask = Task { _ = await writeSave(to: destination) }
+    }
+
+    @discardableResult
+    func saveForTermination() async -> Bool {
+        guard let destination = prepareSaveDestination() else { return false }
+        return await writeSave(to: destination)
+    }
+
+    private func prepareSaveDestination() -> URL? {
         guard canExport else {
             banner = L10n.t("error.emptyWorkspace")
-            return
+            return nil
+        }
+        let known: URL?
+        do {
+            known = try resolveSaveDestination(promptIfNeeded: false)
+        } catch {
+            return nil
         }
         let destination: URL?
-        do {
-            destination = try resolveSaveDestination(promptIfNeeded: false)
-        } catch {
-            return
+        if let known {
+            destination = known
+        } else {
+            do {
+                destination = try resolveSaveDestination(promptIfNeeded: true)
+            } catch {
+                return nil
+            }
         }
-        let url = destination
-        if let url, writesOriginal(url) || options.replaceOriginal {
+        guard let url = destination else { return nil }
+        if writesOriginal(url) || options.replaceOriginal {
             let alert = NSAlert()
             alert.messageText = L10n.t("export.replaceConfirm")
             alert.informativeText = L10n.t("export.replaceMessage")
             alert.addButton(withTitle: L10n.t("ok"))
             alert.addButton(withTitle: L10n.t("cancel"))
-            if alert.runModal() != .alertFirstButtonReturn { return }
+            if alert.runModal() != .alertFirstButtonReturn { return nil }
         }
-        exportTask?.cancel()
-        exportTask = Task { await performSave() }
+        return url
     }
 
     private func writesOriginal(_ url: URL) -> Bool {
@@ -355,17 +407,11 @@ final class AppModel: ObservableObject {
         return nil
     }
 
-    private func performSave() async {
+    private func writeSave(to destination: URL) async -> Bool {
         exportSucceeded = false
         exportProgress = 0
         banner = nil
         do {
-            let destination: URL
-            if let known = try resolveSaveDestination(promptIfNeeded: true) {
-                destination = known
-            } else {
-                throw FolioError.cancelled
-            }
             let document = try await PDFBuilder.build(pages: workspace.pages, tool: .edit, options: options) { value in
                 Task { @MainActor in
                     self.exportProgress = value
@@ -385,15 +431,19 @@ final class AppModel: ObservableObject {
             try? await Task.sleep(for: .milliseconds(1400))
             exportSucceeded = false
             exportProgress = nil
+            return true
         } catch is CancellationError {
             exportProgress = nil
             banner = L10n.t("error.cancelled")
+            return false
         } catch let error as FolioError {
             exportProgress = nil
             banner = L10n.t(error.localizationKey)
+            return false
         } catch {
             exportProgress = nil
             banner = L10n.t("error.writeFailed")
+            return false
         }
     }
 
@@ -494,9 +544,6 @@ final class AppModel: ObservableObject {
             let applyOCR = tool == .ocr
             try await PDFIO.write(document, to: destinations[index], options: writeOptions, applyOCROption: applyOCR)
             lastSize = PDFIO.fileSize(at: destinations[index])
-        }
-        if destinations.count == 1 {
-            lastSaveURL = destinations[0]
         }
         savedEpoch = workspaceEpoch
         outputBytes = lastSize

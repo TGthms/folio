@@ -111,8 +111,12 @@ struct ContentView: View {
         .environment(\.layoutDirection, L10n.isRTL ? .rightToLeft : .leftToRight)
         .focusable()
         .focusEffectDisabled()
-        .onDeleteCommand { model.deleteSelected() }
+        .onDeleteCommand {
+            guard !ContentKeyPolicy.isEditingText else { return }
+            model.deleteSelected()
+        }
         .onMoveCommand { direction in
+            guard !ContentKeyPolicy.isEditingText else { return }
             switch direction {
             case .down, .right:
                 model.navigate(.next)
@@ -123,10 +127,12 @@ struct ContentView: View {
             }
         }
         .onKeyPress(KeyEquivalent("j")) {
+            if ContentKeyPolicy.isEditingText || model.palettePresented { return .ignored }
             model.navigate(.next)
             return .handled
         }
         .onKeyPress(KeyEquivalent("k")) {
+            if ContentKeyPolicy.isEditingText || model.palettePresented { return .ignored }
             model.navigate(.previous)
             return .handled
         }
@@ -151,7 +157,17 @@ struct ContentView: View {
         .onExitCommand {
             if model.palettePresented { model.palettePresented = false }
             model.cancelPageDrag()
+            if model.tool == .edit, model.options.editMark != .select {
+                model.options.editMark = .select
+            }
         }
+    }
+}
+
+enum ContentKeyPolicy {
+    static var isEditingText: Bool {
+        guard let responder = NSApp.keyWindow?.firstResponder else { return false }
+        return responder is NSTextView || responder is NSTextField || responder is NSText
     }
 }
 

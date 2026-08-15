@@ -10,6 +10,31 @@ final class FolioAppDelegate: NSObject, NSApplicationDelegate {
         deliver(urls)
     }
 
+    func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool {
+        true
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        guard let model, model.hasUnsavedEdits else { return .terminateNow }
+        let alert = NSAlert()
+        alert.messageText = L10n.t("quit.unsaved")
+        alert.addButton(withTitle: L10n.t("menu.save"))
+        alert.addButton(withTitle: L10n.t("quit.discard"))
+        alert.addButton(withTitle: L10n.t("cancel"))
+        switch alert.runModal() {
+        case .alertFirstButtonReturn:
+            Task { @MainActor in
+                let saved = await model.saveForTermination()
+                NSApp.reply(toApplicationShouldTerminate: saved)
+            }
+            return .terminateLater
+        case .alertSecondButtonReturn:
+            return .terminateNow
+        default:
+            return .terminateCancel
+        }
+    }
+
     func attach(_ model: AppModel) {
         self.model = model
         if !queued.isEmpty {

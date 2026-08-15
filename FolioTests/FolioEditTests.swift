@@ -1,3 +1,4 @@
+import AppKit
 import PDFKit
 import XCTest
 @testable import Folio
@@ -115,6 +116,56 @@ final class FolioEditTests: XCTestCase {
         XCTAssertTrue(EditInteraction.usesNativePointer(.pages, mark: .draw))
     }
 
+    func testAreaCommitIsOnlyForCustomEditTools() {
+        XCTAssertFalse(EditInteraction.commitsDragRect(.edit, mark: .select))
+        XCTAssertFalse(EditInteraction.commitsDragRect(.edit, mark: .highlight))
+        XCTAssertFalse(EditInteraction.commitsDragRect(.edit, mark: .underline))
+        XCTAssertTrue(EditInteraction.commitsDragRect(.edit, mark: .draw))
+        XCTAssertTrue(EditInteraction.commitsDragRect(.edit, mark: .textBox))
+        XCTAssertTrue(EditInteraction.commitsDragRect(.edit, mark: .crop))
+        XCTAssertTrue(EditInteraction.commitsDragRect(.redact, mark: .select))
+        XCTAssertFalse(EditInteraction.commitsDragRect(.pages, mark: .draw))
+    }
+
+    func testPDFHostHasNoIntrinsicDocumentSize() {
+        let host = FolioPDFHost(frame: NSRect(x: 0, y: 0, width: 400, height: 300))
+        XCTAssertEqual(host.intrinsicContentSize.width, NSView.noIntrinsicMetric)
+        XCTAssertEqual(host.intrinsicContentSize.height, NSView.noIntrinsicMetric)
+        XCTAssertEqual(host.pdfView.intrinsicContentSize.height, NSView.noIntrinsicMetric)
+    }
+
+    func testRubberOverlayNeverTakesHits() {
+        let overlay = RubberOverlay(frame: NSRect(x: 0, y: 0, width: 200, height: 200))
+        XCTAssertNil(overlay.hitTest(NSPoint(x: 40, y: 40)))
+        XCTAssertFalse(overlay.isOpaque)
+    }
+
+    func testReplaceMarkMovesRectAndKeepsIdentity() {
+        var state = WorkspaceState()
+        var page = PageRef(source: .blank(size: CGSize(width: 200, height: 200)))
+        var mark = PageMark(kind: .highlight, rect: CGRect(x: 1, y: 2, width: 30, height: 10))
+        page.marks = [mark]
+        state.append([page])
+        mark.rect = CGRect(x: 40, y: 50, width: 30, height: 10)
+        XCTAssertTrue(state.replaceMark(mark))
+        XCTAssertEqual(state.pages[0].marks[0].id, mark.id)
+        XCTAssertEqual(state.pages[0].marks[0].rect.origin, CGPoint(x: 40, y: 50))
+        XCTAssertEqual(state.mark(id: mark.id)?.rect.width, 30)
+    }
+
+    func testAppModelReplaceMarkRegistersAsUnsaved() {
+        let model = AppModel()
+        var page = PageRef(source: .blank(size: CGSize(width: 10, height: 10)))
+        var mark = PageMark(kind: .textBox, rect: CGRect(x: 2, y: 2, width: 40, height: 16), text: "Hi")
+        page.marks = [mark]
+        model.workspace.append([page])
+        mark.text = "Hello"
+        model.replaceMark(mark)
+        XCTAssertTrue(model.hasUnsavedEdits)
+        XCTAssertEqual(model.workspace.pages[0].marks[0].text, "Hello")
+        XCTAssertEqual(model.selectedMarkID, mark.id)
+    }
+
     func testAnnotationServiceWritesFolioHighlight() {
         let page = PDFPageGraphics.makePage(text: "Hello")
         let mark = PageMark(kind: .highlight, rect: CGRect(x: 70, y: 680, width: 90, height: 18))
@@ -162,6 +213,42 @@ final class FolioEditTests: XCTestCase {
         XCTAssertEqual(model.workspace.pages.count, 1)
         XCTAssertTrue(model.workspace.pages[0].marks.isEmpty)
         XCTAssertNil(model.selectedMarkID)
+    }
+
+    func testUnflattenedSaveKeepsFolioAnnotations() async throws {
+        var page = PageRef(source: .blank(size: CGSize(width: 200, height: 200)))
+        page.marks = [PageMark(kind: .highlight, rect: CGRect(x: 20, y: 20, width: 40, height: 12))]
+        var options = ExportOptions()
+        options.flattenAnnotations = false
+        let document = try await PDFBuilder.build(pages: [page], tool: .edit, options: options)
+        let built = try XCTUnwrap(document.page(at: 0))
+        XCTAssertFalse(built.annotations.isEmpty)
+        XCTAssertEqual(built.annotations[0].userName, AnnotationService.owner)
+    }
+
+    func testFlattenedSavePaintsMarksWithoutLiveAnnotations() async throws {
+        var page = PageRef(source: .blank(size: CGSize(width: 200, height: 200)))
+        page.marks = [PageMark(kind: .highlight, rect: CGRect(x: 20, y: 20, width: 40, height: 12))]
+        var options = ExportOptions()
+        options.flattenAnnotations = true
+        let document = try await PDFBuilder.build(pages: [page], tool: .edit, options: options)
+        let built = try XCTUnwrap(document.page(at: 0))
+        XCTAssertFalse(built.annotations.contains { $0.userName == AnnotationService.owner })
+    }
+
+    func testCropApplyDoesNotUseImageImportInset() {
+        let page = PDFPageGraphics.makeBlankPage(size: CGSize(width: 400, height: 500))
+        let cropped = PDFPageGraphics.crop(page, to: CGRect(x: 40, y: 50, width: 180, height: 220))
+        let bounds = cropped.bounds(for: .mediaBox)
+        XCTAssertEqual(bounds.width, 180, accuracy: 1)
+        XCTAssertEqual(bounds.height, 220, accuracy: 1)
+    }
+
+    func testExportDoesNotBecomeTheSilentSaveTarget() async throws {
+        let model = AppModel()
+        let url = try writeFixture(name: "EXPORT", pages: 1)
+        await model.importURLsAsync([url])
+        XCTAssertNil(model.lastSaveURL)
     }
 
     func testSaveDoesNotWriteUntilDestinationIsChosen() async throws {

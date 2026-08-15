@@ -40,6 +40,8 @@ logic_sources = [
     Path("FolioLogicTests/ProtectWriteTests.swift"),
     Path("Folio/Models/FolioError.swift"),
     Path("Folio/Models/ExportOptions.swift"),
+    Path("Folio/Models/PageMark.swift"),
+    Path("Folio/Models/Tool.swift"),
     Path("Folio/Models/PageRef.swift"),
     Path("Folio/Services/PDFPageGraphics.swift"),
     Path("Folio/Services/PDFIO.swift"),
@@ -232,7 +234,7 @@ CURRENT_PROJECT_VERSION = 1;
 GENERATE_INFOPLIST_FILE = NO;
 INFOPLIST_FILE = Folio/Resources/Info.plist;
 LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/../Frameworks";
-MARKETING_VERSION = 1.0;
+MARKETING_VERSION = 1.0.0;
 PRODUCT_BUNDLE_IDENTIFIER = app.folio.mac;
 PRODUCT_NAME = Folio;
 ENABLE_HARDENED_RUNTIME = YES;

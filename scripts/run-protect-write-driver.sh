@@ -10,6 +10,8 @@ if [[ -x "$BIN" ]]; then
   newest_src=$(ls -t \
     "$ROOT/Folio/Models/FolioError.swift" \
     "$ROOT/Folio/Models/ExportOptions.swift" \
+    "$ROOT/Folio/Models/PageMark.swift" \
+    "$ROOT/Folio/Models/Tool.swift" \
     "$ROOT/Folio/Models/PageRef.swift" \
     "$ROOT/Folio/Services/PDFPageGraphics.swift" \
     "$ROOT/Folio/Services/PDFIO.swift" \
@@ -23,6 +25,8 @@ if [[ "$need_compile" -eq 1 ]]; then
     -o "$BIN" \
     "$ROOT/Folio/Models/FolioError.swift" \
     "$ROOT/Folio/Models/ExportOptions.swift" \
+    "$ROOT/Folio/Models/PageMark.swift" \
+    "$ROOT/Folio/Models/Tool.swift" \
     "$ROOT/Folio/Models/PageRef.swift" \
     "$ROOT/Folio/Services/PDFPageGraphics.swift" \
     "$ROOT/Folio/Services/PDFIO.swift" \

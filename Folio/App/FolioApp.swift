@@ -1,3 +1,4 @@
+import AppKit
 import SwiftUI
 
 @main
@@ -89,7 +90,9 @@ struct FolioApp: App {
                     .keyboardShortcut("k", modifiers: [.command])
             }
             CommandGroup(replacing: .help) {
-                Button(L10n.t("menu.help")) {}
+                Button(L10n.t("menu.help")) {
+                    NSWorkspace.shared.open(FolioLinks.repository)
+                }
             }
         }
 

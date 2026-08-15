@@ -7,6 +7,8 @@ mkdir -p "$OUT"
 BIN="$OUT/verify-export-paths"
 xcrun swiftc -parse-as-library -O -framework PDFKit -framework AppKit \
   -o "$BIN" \
+  "$ROOT/Folio/Models/PageMark.swift" \
+  "$ROOT/Folio/Models/Tool.swift" \
   "$ROOT/Folio/Models/PageRef.swift" \
   "$ROOT/Folio/Models/ExportOptions.swift" \
   "$ROOT/Folio/Services/PDFPageGraphics.swift" \

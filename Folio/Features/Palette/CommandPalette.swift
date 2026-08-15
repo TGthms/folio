@@ -3,6 +3,7 @@ import SwiftUI
 struct CommandPalette: View {
     @ObservedObject var model: AppModel
     @State private var query = ""
+    @FocusState private var queryFocused: Bool
     @Environment(\.colorScheme) private var scheme
 
     private var matches: [PaletteItem] {
@@ -30,6 +31,8 @@ struct CommandPalette: View {
                     .textFieldStyle(.plain)
                     .font(.system(size: 16))
                     .padding(14)
+                    .focused($queryFocused)
+                    .onAppear { queryFocused = true }
                 Divider()
                 ScrollView {
                     VStack(spacing: 0) {

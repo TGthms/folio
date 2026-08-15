@@ -5,8 +5,8 @@ import SwiftUI
 enum SettingsDismissal {
     @MainActor
     static func applyAndDismiss(language: String, model: AppModel) {
-        model.applyLanguage(language == "system" ? nil : language)
         dismiss(model)
+        model.applyLanguage(language == "system" ? nil : language)
     }
 
     @MainActor

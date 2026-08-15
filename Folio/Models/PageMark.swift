@@ -51,6 +51,17 @@ enum EditMarkKind: String, CaseIterable, Identifiable, Sendable {
         }
     }
 
+    var symbol: String {
+        switch self {
+        case .select: return "cursorarrow"
+        case .highlight: return "highlighter"
+        case .underline: return "underline"
+        case .textBox: return "character.textbox"
+        case .draw: return "pencil.tip"
+        case .crop: return "crop"
+        }
+    }
+
     var markKind: PageMarkKind? {
         switch self {
         case .select, .crop: return nil
@@ -63,7 +74,7 @@ enum EditMarkKind: String, CaseIterable, Identifiable, Sendable {
 }
 
 enum EditInteraction {
-    /// Highlight / underline / select use PDFView’s own pointer so the document still scrolls.
+    /// Select / highlight / underline use PDFView’s own pointer so scroll and text selection stay native.
     static func usesNativePointer(_ tool: Tool, mark: EditMarkKind) -> Bool {
         switch tool {
         case .redact:
@@ -77,6 +88,23 @@ enum EditInteraction {
             }
         default:
             return true
+        }
+    }
+
+    /// Rubber-band commits are only for draw / text / crop / redact — never a fake highlight box.
+    static func commitsDragRect(_ tool: Tool, mark: EditMarkKind) -> Bool {
+        switch tool {
+        case .redact:
+            return true
+        case .edit:
+            switch mark {
+            case .textBox, .draw, .crop:
+                return true
+            case .select, .highlight, .underline:
+                return false
+            }
+        default:
+            return false
         }
     }
 }

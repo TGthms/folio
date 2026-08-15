@@ -70,6 +70,21 @@ enum PDFPageGraphics {
         return PDFDocument(data: data)?.page(at: 0) ?? page
     }
 
+    /// New page whose media box is `rect.size`, drawn 1:1 from `rect` in the source. No import inset.
+    static func crop(_ page: PDFPage, to rect: CGRect) -> PDFPage {
+        let media = page.bounds(for: .mediaBox)
+        let clip = rect.intersection(media)
+        guard !clip.isNull, clip.width > 1, clip.height > 1 else { return page }
+        if clip.equalTo(media) { return page }
+        let data = makePDFData(size: clip.size) { ctx, _ in
+            ctx.saveGState()
+            ctx.translateBy(x: -clip.origin.x, y: -clip.origin.y)
+            page.draw(with: .mediaBox, to: ctx)
+            ctx.restoreGState()
+        }
+        return PDFDocument(data: data)?.page(at: 0) ?? page
+    }
+
     static func pageFromImage(_ image: NSImage, canvas: CGSize?) -> PDFPage {
         let imageSize = image.size
         let pageSize = canvas ?? imageSize

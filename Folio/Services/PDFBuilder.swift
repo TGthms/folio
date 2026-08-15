@@ -27,7 +27,12 @@ enum PDFBuilder {
                 page = RedactService.burn(page, redactions: ref.redactions, fill: options.redactFill)
             }
             if ref.hasEdits {
-                page = MarkService.burn(page, marks: ref.marks, crop: ref.cropRect)
+                page = MarkService.apply(
+                    page,
+                    marks: ref.marks,
+                    crop: ref.cropRect,
+                    flatten: options.flattenAnnotations
+                )
             }
 
             if tool == .compress {
