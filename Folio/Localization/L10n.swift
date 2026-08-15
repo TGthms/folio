@@ -13,6 +13,14 @@ enum L10n {
 
     static let rtlCodes: Set<String> = ["ar", "he"]
 
+    private final class Generation: @unchecked Sendable {
+        var value = 0
+    }
+
+    private static let generationBox = Generation()
+
+    static var generation: Int { generationBox.value }
+
     static var overrideCode: String? {
         get {
             let value = UserDefaults.standard.string(forKey: overrideKey)
@@ -27,36 +35,73 @@ enum L10n {
         }
     }
 
-    static func applyOverrideAtLaunch() {
-        if let code = overrideCode {
+    /// Maps a BCP-47 / Apple language id onto a shipped catalog code.
+    static func resolve(_ raw: String) -> String {
+        if supportedCodes.contains(raw) { return raw }
+        let folded = raw.replacingOccurrences(of: "_", with: "-")
+        if folded.hasPrefix("zh-Hans") || folded.hasPrefix("zh-CN") || folded == "zh" {
+            return "zh-Hans"
+        }
+        if folded.hasPrefix("zh-Hant") || folded.hasPrefix("zh-TW") || folded.hasPrefix("zh-HK") {
+            return "zh-Hant"
+        }
+        if folded.hasPrefix("pt-BR") { return "pt-BR" }
+        if folded.hasPrefix("pt") { return "pt-PT" }
+        let prefix = folded.split(separator: "-").first.map(String.init) ?? folded
+        if supportedCodes.contains(prefix) { return prefix }
+        return "en"
+    }
+
+    /// Catalog used by every `t(_:)` lookup in the UI.
+    static var catalogCode: String {
+        if let overrideCode { return resolve(overrideCode) }
+        let preferred = Locale.preferredLanguages.first ?? "en"
+        return resolve(preferred)
+    }
+
+    @discardableResult
+    static func apply(_ code: String?) -> String {
+        overrideCode = code
+        if let code {
             UserDefaults.standard.set([code], forKey: "AppleLanguages")
         } else {
             UserDefaults.standard.removeObject(forKey: "AppleLanguages")
         }
+        generationBox.value &+= 1
+        return catalogCode
     }
 
-    static var effectiveCode: String {
-        if let overrideCode { return overrideCode }
-        let preferred = Locale.preferredLanguages.first ?? "en"
-        return preferred
+    static func applyOverrideAtLaunch() {
+        if let code = overrideCode {
+            UserDefaults.standard.set([code], forKey: "AppleLanguages")
+        }
     }
+
+    static var effectiveCode: String { catalogCode }
 
     static var isRTL: Bool {
-        let code = effectiveCode
-        if rtlCodes.contains(code) { return true }
-        if let language = Locale.Language(identifier: code).languageCode?.identifier {
-            return rtlCodes.contains(language)
+        rtlCodes.contains(catalogCode)
+    }
+
+    /// Looks up `key` in the shipped `.lproj` table for `locale` (not process `AppleLanguages`).
+    static func string(_ key: String, locale: String) -> String {
+        let code = resolve(locale)
+        if let value = tableValue(key, locale: code) {
+            return value
         }
-        return false
+        if code != "en", let value = tableValue(key, locale: "en") {
+            return value
+        }
+        return key
     }
 
     static func t(_ key: String) -> String {
-        String(localized: String.LocalizationValue(key))
+        string(key, locale: catalogCode)
     }
 
     static func t(_ key: String, _ arguments: CVarArg...) -> String {
-        let format = String(localized: String.LocalizationValue(key))
-        return String(format: format, locale: .current, arguments: arguments)
+        let format = string(key, locale: catalogCode)
+        return String(format: format, locale: Locale(identifier: catalogCode), arguments: arguments)
     }
 
     static func suffix(for tool: Tool) -> String {
@@ -65,7 +110,24 @@ enum L10n {
 
     static func languageName(for code: String) -> String {
         if code == "system" { return t("settings.language.system") }
-        let locale = Locale(identifier: code)
+        let locale = Locale(identifier: catalogCode)
         return locale.localizedString(forIdentifier: code) ?? code
+    }
+
+    private static func tableValue(_ key: String, locale: String) -> String? {
+        guard
+            let url = Bundle.main.url(
+                forResource: "Localizable",
+                withExtension: "strings",
+                subdirectory: nil,
+                localization: locale
+            ),
+            let table = NSDictionary(contentsOf: url) as? [String: String],
+            let value = table[key],
+            !value.isEmpty
+        else {
+            return nil
+        }
+        return value
     }
 }

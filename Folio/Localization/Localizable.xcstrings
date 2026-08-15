@@ -18958,181 +18958,733 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Changing language applies the next time Folio opens."
+            "value": "The interface language updates when you choose one."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "El idioma se aplica la próxima vez que abras Folio."
+            "value": "El idioma de la interfaz cambia al elegirlo."
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Le changement de langue s’applique au prochain lancement de Folio."
+            "value": "La langue de l’interface change dès que vous en choisissez une."
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Die Sprache gilt beim nächsten Start von Folio."
+            "value": "Die Sprache der Oberfläche ändert sich, sobald Sie eine wählen."
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "La lingua viene applicata al prossimo avvio di Folio."
+            "value": "La lingua dell’interfaccia si aggiorna quando ne scegli una."
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "O idioma vale na próxima vez que o Folio abrir."
+            "value": "O idioma da interface muda quando você escolhe um."
           }
         },
         "pt-PT": {
           "stringUnit": {
             "state": "translated",
-            "value": "O idioma aplica-se da próxima vez que o Folio abrir."
+            "value": "O idioma da interface muda quando escolhe um."
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "De taalwijziging geldt de volgende keer dat Folio opent."
+            "value": "De interfacetaal verandert zodra je er een kiest."
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Sprogændringen gælder næste gang, Folio åbnes."
+            "value": "Grænsefladesproget skifter, når du vælger et."
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Språkbytet gäller nästa gång Folio öppnas."
+            "value": "Gränssnittsspråket uppdateras när du väljer ett."
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Språkendringen gjelder neste gang Folio åpnes."
+            "value": "Grensesnittspråket oppdateres når du velger et."
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Kielimuutos tulee voimaan, kun Folio avataan seuraavan kerran."
+            "value": "Käyttöliittymän kieli vaihtuu, kun valitset kielen."
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Zmiana języka zadziała przy następnym otwarciu Folio."
+            "value": "Język interfejsu zmienia się po wybraniu."
           }
         },
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "Změna jazyka se použije při příštím otevření Folia."
+            "value": "Jazyk rozhraní se změní hned po výběru."
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "A nyelvváltozás a Folio következő megnyitásakor érvényesül."
+            "value": "A felület nyelve a választás után azonnal vált."
           }
         },
         "ro": {
           "stringUnit": {
             "state": "translated",
-            "value": "Schimbarea limbii se aplică la următoarea deschidere a Folio."
+            "value": "Limba interfeței se schimbă când alegi una."
           }
         },
         "el": {
           "stringUnit": {
             "state": "translated",
-            "value": "Η αλλαγή γλώσσας εφαρμόζεται την επόμενη φορά που θα ανοίξει το Folio."
+            "value": "Η γλώσσα της διεπαφής αλλάζει μόλις επιλέξετε μία."
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Dil değişikliği Folio bir sonraki açılışında uygulanır."
+            "value": "Arayüz dili birini seçtiğinizde güncellenir."
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Смена языка применится при следующем открытии Folio."
+            "value": "Язык интерфейса меняется сразу после выбора."
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Зміна мови застосується під час наступного відкриття Folio."
+            "value": "Мова інтерфейсу змінюється одразу після вибору."
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "يُطبَّق تغيير اللغة في المرة التالية التي تفتح فيها Folio."
+            "value": "تتغير لغة الواجهة عند اختيار لغة."
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "שינוי השפה יחול בפעם הבאה שFolio ייפתח."
+            "value": "שפת הממשק מתעדכנת כשבוחרים אחת."
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "भाषा बदलना अगली बार Folio खुलने पर लागू होगा।"
+            "value": "भाषा चुनते ही इंटरफ़ेस की भाषा बदल जाती है।"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "การเปลี่ยนภาษาจะมีผลเมื่อเปิด Folio ครั้งถัดไป"
+            "value": "ภาษาของอินเทอร์เฟซเปลี่ยนเมื่อคุณเลือก"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Đổi ngôn ngữ có hiệu lực lần sau khi mở Folio."
+            "value": "Ngôn ngữ giao diện đổi ngay khi bạn chọn."
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Perubahan bahasa berlaku saat Folio dibuka berikutnya."
+            "value": "Bahasa antarmuka berubah saat Anda memilih."
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "言語の変更は、次にFolioを開いたときに適用されます。"
+            "value": "言語を選ぶと、すぐに表示が切り替わります。"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "언어 변경은 Folio를 다음에 열 때 적용됩니다."
+            "value": "언어를 고르면 인터페이스가 바로 바뀝니다."
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "更改语言将在下次打开 Folio 时生效。"
+            "value": "选择语言后，界面会立即切换。"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "變更語言會在下次開啟 Folio 時套用。"
+            "value": "選擇語言後，介面會立即切換。"
+          }
+        }
+      }
+    },
+    "pages.selectRange": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Select"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleccionar"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sélectionner"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Auswählen"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seleziona"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecionar"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selecteren"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vælg"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Markera"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Velg"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Valitse"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zaznacz"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Vybrat"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kijelölés"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Selectează"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Επιλογή"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seç"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Выбрать"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Вибрати"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "تحديد"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "בחר"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "चुनें"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "เลือก"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Chọn"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pilih"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選択"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "선택"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "选择"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "選取"
+          }
+        }
+      }
+    },
+    "pages.selectRangeHint": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pages or ranges"
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Páginas o intervalos"
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pages ou plages"
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Seiten oder Bereiche"
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagine o intervalli"
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Páginas ou intervalos"
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Páginas ou intervalos"
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagina’s of bereiken"
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sider eller intervaller"
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sidor eller intervall"
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sider eller intervaller"
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sivut tai alueet"
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Strony lub zakresy"
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Stránky nebo rozsahy"
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Oldalak vagy tartományok"
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Pagini sau intervale"
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Σελίδες ή εύρη"
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayfalar veya aralıklar"
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Страницы или диапазоны"
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Сторінки або діапазони"
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "صفحات أو نطاقات"
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "עמודים או טווחים"
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पृष्ठ या सीमाएँ"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "หน้าหรือช่วง"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Trang hoặc khoảng"
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Halaman atau rentang"
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ページまたは範囲"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "페이지 또는 범위"
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "页码或范围"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "頁碼或範圍"
+          }
+        }
+      }
+    },
+    "pages.selectRangeHelp": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Type page numbers or ranges. Delete and other actions apply to this selection."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Escribe números de página o intervalos. Eliminar y otras acciones usan esta selección."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Saisissez des numéros ou des plages. Supprimer et les autres actions s’appliquent à cette sélection."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Geben Sie Seitenzahlen oder Bereiche ein. Löschen und andere Aktionen gelten für diese Auswahl."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Inserisci numeri di pagina o intervalli. Elimina e le altre azioni usano questa selezione."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Digite números de página ou intervalos. Excluir e outras ações usam esta seleção."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Introduza números de página ou intervalos. Eliminar e outras ações usam esta seleção."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Typ paginanummers of bereiken. Verwijderen en andere acties gebruiken deze selectie."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skriv sidenumre eller intervaller. Slet og andre handlinger bruger dette valg."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skriv sidnummer eller intervall. Radera och andra åtgärder använder det här urvalet."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Skriv sidenummer eller intervaller. Slett og andre handlinger bruker dette utvalget."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Kirjoita sivunumerot tai alueet. Poisto ja muut toiminnot käyttävät tätä valintaa."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Wpisz numery stron lub zakresy. Usuwanie i inne działania używają tego zaznaczenia."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Zadejte čísla stránek nebo rozsahy. Mazání a další akce použijí tento výběr."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Írjon oldalszámokat vagy tartományokat. A törlés és más műveletek ezt a kijelölést használják."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Tastează numere de pagină sau intervale. Ștergerea și celelalte acțiuni folosesc această selecție."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Πληκτρολογήστε αριθμούς σελίδων ή εύρη. Η διαγραφή και οι άλλες ενέργειες χρησιμοποιούν αυτή την επιλογή."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Sayfa numaraları veya aralıklar yazın. Silme ve diğer işlemler bu seçimi kullanır."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введите номера страниц или диапазоны. Удаление и другие действия применяются к этому выбору."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Введіть номери сторінок або діапазони. Вилучення та інші дії застосовують цей вибір."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "اكتب أرقام الصفحات أو النطاقات. الحذف والإجراءات الأخرى تستخدم هذا التحديد."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "הקלידו מספרי עמוד או טווחים. מחיקה ופעולות אחרות משתמשות בבחירה הזו."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "पृष्ठ संख्या या सीमाएँ लिखें। हटाना और अन्य क्रियाएँ इसी चयन पर लागू होती हैं।"
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "พิมพ์เลขหน้าหรือช่วง การลบและการทำงานอื่นใช้การเลือกนี้"
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Nhập số trang hoặc khoảng. Xóa và thao tác khác dùng phần chọn này."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ketik nomor halaman atau rentang. Hapus dan tindakan lain memakai pilihan ini."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "ページ番号や範囲を入力します。削除などの操作はこの選択に対して行われます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "페이지 번호나 범위를 입력하세요. 삭제와 다른 동작은 이 선택에 적용됩니다."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "输入页码或范围。删除和其他操作会作用于这次选择。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "輸入頁碼或範圍。刪除和其他動作會套用到這次選取。"
           }
         }
       }

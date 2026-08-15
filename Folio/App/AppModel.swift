@@ -23,6 +23,9 @@ final class AppModel: ObservableObject {
     @Published var hasExportedOnce: Bool
     @Published var pendingPasswordURL: URL?
     @Published var draggingPageID: UUID?
+    @Published var dragPreviewDestination: Int?
+    @Published var pageRangeDraft: String = ""
+    @Published var localeGeneration: Int = L10n.generation
     @Published var sourceWasEncrypted = false
 
     var undoManager: UndoManager?
@@ -161,6 +164,44 @@ final class AppModel: ObservableObject {
     func movePage(id: UUID, to destination: Int) {
         registerUndo()
         workspace.move(id: id, to: destination)
+    }
+
+    func applyLanguage(_ code: String?) {
+        L10n.apply(code)
+        localeGeneration = L10n.generation
+    }
+
+    func previewPageMove(id: UUID, to destination: Int) {
+        if dragPreviewDestination != destination {
+            dragPreviewDestination = destination
+        }
+    }
+
+    func commitPageDrag() {
+        guard let id = draggingPageID, let dest = dragPreviewDestination else {
+            cancelPageDrag()
+            return
+        }
+        let next = PageReorder.move(workspace.pages, id: id, to: dest)
+        if next.map(\.id) != workspace.pages.map(\.id) {
+            registerUndo()
+            workspace.pages = next
+            workspace.focusedID = id
+        }
+        cancelPageDrag()
+    }
+
+    func cancelPageDrag() {
+        draggingPageID = nil
+        dragPreviewDestination = nil
+    }
+
+    func selectPages(range: String) {
+        do {
+            workspace = try PageSelection.select(range: range, in: workspace)
+        } catch {
+            banner = L10n.t("error.invalidRange")
+        }
     }
 
     func redactEntireSelectedPages() {

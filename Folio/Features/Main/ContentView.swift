@@ -8,6 +8,7 @@ struct ContentView: View {
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
+        let _ = model.localeGeneration
         ZStack {
             HStack(spacing: 0) {
                 SidebarView(model: model)
@@ -86,7 +87,6 @@ struct ContentView: View {
                     Image(systemName: "gearshape")
                 }
                 .help(L10n.t("toolbar.settings"))
-                .keyboardShortcut(",", modifiers: [.command])
             }
         }
         .onAppear { model.undoManager = undoManager }
@@ -104,6 +104,7 @@ struct ContentView: View {
             SettingsView(model: model)
                 .frame(width: 440, height: 268)
         }
+        .environment(\.layoutDirection, L10n.isRTL ? .rightToLeft : .leftToRight)
         .focusable()
         .focusEffectDisabled()
         .onDeleteCommand { model.deleteSelected() }
@@ -145,6 +146,7 @@ struct ContentView: View {
         }
         .onExitCommand {
             if model.palettePresented { model.palettePresented = false }
+            model.cancelPageDrag()
         }
     }
 }

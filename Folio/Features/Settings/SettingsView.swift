@@ -6,9 +6,11 @@ enum FolioLinks {
 
 struct SettingsView: View {
     @ObservedObject var model: AppModel
+    @Environment(\.dismiss) private var dismiss
     @State private var language: String = L10n.overrideCode ?? "system"
 
     var body: some View {
+        let _ = model.localeGeneration
         VStack(alignment: .leading, spacing: 16) {
             Text(L10n.t("settings.title"))
                 .font(.system(size: 18, weight: .semibold))
@@ -17,6 +19,9 @@ struct SettingsView: View {
                 ForEach(L10n.supportedCodes, id: \.self) { code in
                     Text(L10n.languageName(for: code)).tag(code)
                 }
+            }
+            .onChange(of: language) { _, newValue in
+                model.applyLanguage(newValue == "system" ? nil : newValue)
             }
             Text(L10n.t("settings.language.relaunch"))
                 .font(.system(size: 12))
@@ -37,8 +42,8 @@ struct SettingsView: View {
             HStack {
                 Spacer()
                 Button(L10n.t("done")) {
-                    L10n.overrideCode = language == "system" ? nil : language
-                    model.settingsPresented = false
+                    SettingsDismissal.applyAndDismiss(language: language, model: model)
+                    dismiss()
                 }
                 .keyboardShortcut(.defaultAction)
             }

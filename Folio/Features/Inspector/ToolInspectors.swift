@@ -46,6 +46,15 @@ struct ToolInspectors: View {
 
     private var pagesOps: some View {
         VStack(alignment: .leading, spacing: 8) {
+            Text(L10n.t("pages.selectRangeHelp"))
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+            TextField(L10n.t("pages.selectRangeHint"), text: $model.pageRangeDraft)
+                .textFieldStyle(.roundedBorder)
+                .onSubmit { model.selectPages(range: model.pageRangeDraft) }
+            Button(L10n.t("pages.selectRange")) {
+                model.selectPages(range: model.pageRangeDraft)
+            }
             Button(L10n.t("pages.reverse")) { model.reversePages() }
             Button(L10n.t("pages.duplicate")) { model.duplicateSelected() }
             Button(L10n.t("pages.insertBlank")) { model.insertBlank() }

@@ -9,6 +9,7 @@ struct FolioApp: App {
     }
 
     var body: some Scene {
+        let _ = model.localeGeneration
         WindowGroup {
             ContentView(model: model)
                 .environment(\.layoutDirection, L10n.isRTL ? .rightToLeft : .leftToRight)

@@ -67,12 +67,7 @@ struct WorkspaceState: Equatable, Sendable {
     }
 
     mutating func move(id: UUID, to destination: Int) {
-        guard let current = pages.firstIndex(where: { $0.id == id }) else { return }
-        var dest = destination
-        if current < dest { dest -= 1 }
-        dest = max(0, min(dest, pages.count - 1))
-        let page = pages.remove(at: current)
-        pages.insert(page, at: dest)
+        pages = PageReorder.move(pages, id: id, to: destination)
     }
 
     mutating func redactSelectedPages() {

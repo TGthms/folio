@@ -9,43 +9,87 @@ struct PageTrayView: View {
 
     private let columns = [GridItem(.adaptive(minimum: 132, maximum: 180), spacing: 18)]
 
+    private var displayedPages: [PageRef] {
+        PageReorder.displayed(
+            model.workspace.pages,
+            dragging: model.draggingPageID,
+            previewDestination: model.dragPreviewDestination
+        )
+    }
+
     var body: some View {
-        ScrollView {
-            LazyVGrid(columns: columns, spacing: 18) {
-                ForEach(Array(model.workspace.pages.enumerated()), id: \.element.id) { index, page in
-                    PageThumbCell(
-                        page: page,
-                        index: index,
-                        selected: model.workspace.selectedIDs.contains(page.id) || model.workspace.focusedID == page.id,
-                        scheme: scheme
-                    )
-                    .onTapGesture(count: 2) {
-                        model.workspace.focusedID = page.id
-                        withAnimation(FolioMotion.panel(reduceMotion: reduceMotion)) {
-                            model.stageMode = .read
-                        }
-                    }
-                    .onTapGesture {
-                        model.selectPage(
-                            page.id,
-                            extend: NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.command)
+        VStack(spacing: 0) {
+            rangeBar
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 18) {
+                    ForEach(Array(displayedPages.enumerated()), id: \.element.id) { index, page in
+                        PageThumbCell(
+                            page: page,
+                            index: index,
+                            selected: model.workspace.selectedIDs.contains(page.id) || model.workspace.focusedID == page.id,
+                            scheme: scheme
                         )
+                        .onTapGesture(count: 2) {
+                            model.workspace.focusedID = page.id
+                            withAnimation(FolioMotion.panel(reduceMotion: reduceMotion)) {
+                                model.stageMode = .read
+                            }
+                        }
+                        .onTapGesture {
+                            model.selectPage(
+                                page.id,
+                                extend: NSEvent.modifierFlags.contains(.shift) || NSEvent.modifierFlags.contains(.command)
+                            )
+                        }
+                        .onDrag {
+                            model.draggingPageID = page.id
+                            model.workspace.focusedID = page.id
+                            return NSItemProvider(object: page.id.uuidString as NSString)
+                        }
+                        .onDrop(of: [.text, .fileURL], delegate: PageDropDelegate(model: model, destination: page))
                     }
-                    .onDrag {
-                        model.draggingPageID = page.id
-                        model.workspace.focusedID = page.id
-                        return NSItemProvider(object: page.id.uuidString as NSString)
-                    }
-                    .onDrop(of: [.text, .fileURL], delegate: PageDropDelegate(model: model, destination: page))
                 }
+                .padding(28)
+                .environment(\.layoutDirection, .leftToRight)
+                .animation(
+                    model.draggingPageID == nil ? FolioMotion.snap(reduceMotion: reduceMotion) : nil,
+                    value: model.workspace.pages.map(\.id)
+                )
             }
-            .padding(28)
-            .environment(\.layoutDirection, .leftToRight)
-            .animation(FolioMotion.snap(reduceMotion: reduceMotion), value: model.workspace.pages.map(\.id))
         }
         .onDrop(of: [.fileURL], isTargeted: $model.isDropTargeted) { providers in
             ContentDrop.importProviders(providers, into: model)
             return true
+        }
+    }
+
+    private var rangeBar: some View {
+        HStack(alignment: .center, spacing: 10) {
+            VStack(alignment: .leading, spacing: 3) {
+                TextField(L10n.t("pages.selectRangeHint"), text: $model.pageRangeDraft)
+                    .textFieldStyle(.roundedBorder)
+                    .frame(maxWidth: 220)
+                    .onSubmit { model.selectPages(range: model.pageRangeDraft) }
+                    .accessibilityLabel(L10n.t("pages.selectRangeHint"))
+                    .accessibilityHint(L10n.t("pages.selectRangeHelp"))
+                Text(L10n.t("pages.selectRangeHelp"))
+                    .font(.system(size: 11))
+                    .foregroundStyle(FolioTheme.secondaryInk(for: scheme))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            Button(L10n.t("pages.selectRange")) {
+                model.selectPages(range: model.pageRangeDraft)
+            }
+            .controlSize(.regular)
+            .disabled(model.pageRangeDraft.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
+            Spacer(minLength: 0)
+        }
+        .padding(.horizontal, 28)
+        .padding(.vertical, 10)
+        .overlay(alignment: .bottom) {
+            Rectangle()
+                .fill(FolioTheme.rule(for: scheme))
+                .frame(height: 1)
         }
     }
 }
@@ -101,9 +145,10 @@ struct PageDropDelegate: DropDelegate {
     func performDrop(info: DropInfo) -> Bool {
         if info.hasItemsConforming(to: [.fileURL]) {
             ContentDrop.importProviders(info.itemProviders(for: [.fileURL]), into: model)
+            model.cancelPageDrag()
             return true
         }
-        model.draggingPageID = nil
+        model.commitPageDrag()
         return true
     }
 
@@ -112,11 +157,11 @@ struct PageDropDelegate: DropDelegate {
               fromID != destination.id,
               let dest = model.workspace.pages.firstIndex(where: { $0.id == destination.id })
         else { return }
-        model.movePage(id: fromID, to: dest)
+        model.previewPageMove(id: fromID, to: dest)
     }
 
     func dropUpdated(info: DropInfo) -> DropProposal? {
-        DropProposal(operation: .move)
+        DropProposal(operation: info.hasItemsConforming(to: [.fileURL]) ? .copy : .move)
     }
 }
 
