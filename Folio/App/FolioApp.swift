@@ -2,6 +2,7 @@ import SwiftUI
 
 @main
 struct FolioApp: App {
+    @NSApplicationDelegateAdaptor(FolioAppDelegate.self) private var appDelegate
     @StateObject private var model = AppModel()
 
     init() {
@@ -16,6 +17,10 @@ struct FolioApp: App {
                 .tint(FolioTheme.vermilion)
                 .onAppear {
                     NSApp.appearance = nil
+                    appDelegate.attach(model)
+                }
+                .onOpenURL { url in
+                    DocumentOpen.enqueue([url], into: model)
                 }
         }
         .defaultSize(width: 1320, height: 840)

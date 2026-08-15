@@ -70,10 +70,12 @@ final class AppModel: ObservableObject {
         }
     }
 
+    /// Finder, `onOpenURL`, Add Files, and drops all enter here.
     func importURLs(_ urls: [URL]) {
         Task { await importURLsAsync(urls) }
     }
 
+    /// Shipped open/import: load every page into the workspace; never writes the source.
     func importURLsAsync(_ urls: [URL]) async {
         for url in urls {
             _ = url.startAccessingSecurityScopedResource()

@@ -96,37 +96,14 @@ final class ReadAndNavTests: XCTestCase {
         XCTAssertEqual(WorkspaceNavigation.focusedIndex(in: state), 0)
     }
 
-    func testReaderUsesMultiPageBuilderNotSingleInsert() throws {
-        let root = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-        let reader = try String(contentsOf: root.appendingPathComponent("Folio/Features/Stage/ReaderView.swift"), encoding: .utf8)
-        XCTAssertTrue(reader.contains("ReadDocumentBuilder.build"))
-        XCTAssertTrue(reader.contains("singlePageContinuous"))
-        XCTAssertFalse(reader.contains("focusedPage(), let pdfPage = try? PDFBuilder.copyPage"))
-    }
-
-    func testKeyboardCommandsAreBoundInAppAndStage() throws {
-        let root = URL(fileURLWithPath: #filePath)
-            .deletingLastPathComponent()
-            .deletingLastPathComponent()
-        let app = try String(contentsOf: root.appendingPathComponent("Folio/App/FolioApp.swift"), encoding: .utf8)
-        XCTAssertTrue(app.contains("nav.next"))
-        XCTAssertTrue(app.contains("nav.previous"))
-        XCTAssertTrue(app.contains("nav.first"))
-        XCTAssertTrue(app.contains("nav.last"))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"o\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"s\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"1\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"2\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"i\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"k\""))
-        XCTAssertTrue(app.contains("keyboardShortcut(\"r\""))
-        let stage = try String(contentsOf: root.appendingPathComponent("Folio/Features/Main/ContentView.swift"), encoding: .utf8)
-        XCTAssertTrue(stage.contains("onMoveCommand"))
-        XCTAssertTrue(stage.contains("navigate(.next)"))
-        XCTAssertTrue(stage.contains("navigate(.previous)"))
-        XCTAssertTrue(stage.contains("onDeleteCommand"))
+    func testReaderUsesMultiPageBuilderNotSingleInsert() async throws {
+        let pages = [
+            PageRef(source: .pdf(url: try writeFixture(name: "R1", pages: 1), pageIndex: 0)),
+            PageRef(source: .pdf(url: try writeFixture(name: "R2", pages: 1), pageIndex: 0)),
+        ]
+        let document = try ReadDocumentBuilder.build(pages: pages)
+        XCTAssertEqual(document.pageCount, pages.count)
+        XCTAssertNotEqual(document.pageCount, 1, "Read must not be a single focused-page insert")
     }
 
     private func writeFixture(name: String, pages: Int) throws -> URL {

@@ -95,7 +95,7 @@ struct ContentView: View {
             return true
         }
         .onOpenURL { url in
-            model.importURLs([url])
+            DocumentOpen.enqueue([url], into: model)
         }
         .sheet(item: $model.passwordPrompt) { _ in
             PasswordSheet(model: model)
