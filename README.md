@@ -17,6 +17,7 @@ Drop PDFs or images into a single workspace, arrange pages, pick a job, then exp
 - Protect and unlock
 - Extract text and OCR
 - True redaction (redacted pages are rasterized)
+- Edit: highlight, underline, text box, draw, crop, replace a page with an image. Marks burn on Save / Export. Existing PDF text is not rewritten.
 - Read mode scrolls every page in the workspace
 - 30 interface languages, including RTL; language follows macOS
 - Sandboxed. No network entitlement. Work stays on this computer.
@@ -44,14 +45,14 @@ The script regenerates `Folio.xcodeproj` and the string catalog, then produces `
 
 Drop PDFs or images onto the window. Arrange pages, pick a job in the sidebar, then **Export…**.
 
-- `⌘O` add files · `⌘S` export · `⌘P` print
+- `⌘O` add files · `⌘S` save · `⇧⌘S` export · `⌘P` print
 - `⌘1` Pages · `⌘2` Read (scrolls the whole workspace)
 - `⌘]` / `⌘[` next / previous page · `⌥⌘↑` / `⌥⌘↓` first / last
 - arrows, `j`/`k`, Page Up/Down, Home/End
 - `⌘R` / `⇧⌘R` rotate · `⌘⌫` remove from workspace · `⌘A` select all pages
 - `⌘I` inspector · `⌘K` command palette · `⌘Z` undo
 
-Language follows **System Settings → Language & Region**. Override it in Settings; it applies on the next launch.
+Language follows **System Settings → Language & Region**. Override it in Settings; the interface updates immediately.
 
 ## Tests
 

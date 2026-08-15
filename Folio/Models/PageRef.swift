@@ -22,18 +22,26 @@ struct PageRef: Identifiable, Hashable, Sendable {
     var source: PageSource
     var rotation: Int
     var redactions: [Redaction]
+    var marks: [PageMark]
+    var cropRect: CGRect?
 
     init(
         id: UUID = UUID(),
         source: PageSource,
         rotation: Int = 0,
-        redactions: [Redaction] = []
+        redactions: [Redaction] = [],
+        marks: [PageMark] = [],
+        cropRect: CGRect? = nil
     ) {
         self.id = id
         self.source = source
         self.rotation = Self.normalized(rotation)
         self.redactions = redactions
+        self.marks = marks
+        self.cropRect = cropRect
     }
+
+    var hasEdits: Bool { !marks.isEmpty || cropRect != nil }
 
     mutating func rotate(by degrees: Int) {
         rotation = Self.normalized(rotation + degrees)

@@ -12,7 +12,7 @@ final class ThumbnailCache {
     }
 
     func key(for page: PageRef, width: Int) -> NSString {
-        "\(page.id.uuidString)-\(page.rotation)-\(page.redactions.count)-\(width)" as NSString
+        "\(page.id.uuidString)-\(page.rotation)-\(page.redactions.count)-\(page.marks.count)-\(page.cropRect?.debugDescription ?? "-")-\(width)" as NSString
     }
 
     func image(for page: PageRef, size: CGSize) -> NSImage? {
@@ -26,10 +26,16 @@ final class ThumbnailCache {
     func generate(for page: PageRef, size: CGSize) -> NSImage? {
         if let hit = image(for: page, size: size) { return hit }
         guard let original = try? PDFIO.page(for: page),
-              let copy = try? PDFPageIsolation.detached(original)
+              let detached = try? PDFPageIsolation.detached(original)
         else { return nil }
-        copy.rotation = (copy.rotation + page.rotation) % 360
-        let thumb = copy.thumbnail(of: size, for: .mediaBox)
+        detached.rotation = (detached.rotation + page.rotation) % 360
+        let rendered: PDFPage
+        if page.hasEdits {
+            rendered = MarkService.burn(detached, marks: page.marks, crop: page.cropRect)
+        } else {
+            rendered = detached
+        }
+        let thumb = rendered.thumbnail(of: size, for: .mediaBox)
         store(thumb, for: page, size: size)
         return thumb
     }

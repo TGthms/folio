@@ -90,6 +90,10 @@ struct ContentView: View {
             }
         }
         .onAppear { model.undoManager = undoManager }
+        .onChange(of: undoManager) { _, newValue in
+            model.undoManager = newValue
+        }
+        .background(WindowEditedSync(edited: model.hasUnsavedEdits))
         .onDrop(of: [.fileURL], isTargeted: $model.isDropTargeted) { providers in
             ContentDrop.importProviders(providers, into: model)
             return true
@@ -102,7 +106,7 @@ struct ContentView: View {
         }
         .sheet(isPresented: $model.settingsPresented) {
             SettingsView(model: model)
-                .frame(width: 440, height: 268)
+                .frame(width: 460, height: 320)
         }
         .environment(\.layoutDirection, L10n.isRTL ? .rightToLeft : .leftToRight)
         .focusable()
@@ -148,5 +152,17 @@ struct ContentView: View {
             if model.palettePresented { model.palettePresented = false }
             model.cancelPageDrag()
         }
+    }
+}
+
+private struct WindowEditedSync: NSViewRepresentable {
+    var edited: Bool
+
+    func makeNSView(context: Context) -> NSView {
+        NSView(frame: .zero)
+    }
+
+    func updateNSView(_ view: NSView, context: Context) {
+        view.window?.isDocumentEdited = edited
     }
 }

@@ -142,6 +142,37 @@ final class SettingsLanguageAndPagesTests: XCTestCase {
         XCTAssertNil(model.dragPreviewDestination)
     }
 
+    func testLanguageNameUsesCatalogNotProcessLocale() {
+        L10n.apply("zh-Hans")
+        let chinese = L10n.languageName(for: "zh-Hans")
+        XCTAssertTrue(
+            chinese.contains("中文") || chinese.contains("简体"),
+            "expected a Chinese name, got \(chinese)"
+        )
+        XCTAssertFalse(chinese.localizedCaseInsensitiveContains("chinois"))
+        XCTAssertFalse(chinese.localizedCaseInsensitiveContains("simplified chinese"))
+
+        L10n.apply("en")
+        let english = L10n.languageName(for: "zh-Hans")
+        XCTAssertFalse(english.localizedCaseInsensitiveContains("chinois"))
+        XCTAssertTrue(
+            english.localizedCaseInsensitiveContains("chinese") || english.contains("中文"),
+            "expected an English catalog name, got \(english)"
+        )
+    }
+
+    func testFormatBytesUsesCatalogLocale() {
+        L10n.apply("en")
+        let english = L10n.formatBytes(1536)
+        L10n.apply("fr")
+        let french = L10n.formatBytes(1536)
+        XCTAssertNotEqual(english, french)
+        XCTAssertTrue(english.contains("KB"))
+        XCTAssertTrue(french.contains("KB"))
+        L10n.apply("zh-Hans")
+        XCTAssertEqual(L10n.formatBytes(0), L10n.t("size.zero"))
+    }
+
     func testCancelPreviewLeavesOrderUnchanged() {
         let model = AppModel()
         model.workspace.append((0..<3).map { _ in PageRef(source: .blank(size: CGSize(width: 10, height: 10))) })

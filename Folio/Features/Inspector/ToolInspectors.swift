@@ -8,6 +8,8 @@ struct ToolInspectors: View {
             switch model.tool {
             case .pages:
                 pagesOps
+            case .edit:
+                editOps
             case .merge:
                 Text(L10n.t("merge.help"))
                     .font(.system(size: 12))
@@ -42,6 +44,25 @@ struct ToolInspectors: View {
                 redactOps
             }
         }
+    }
+
+    private var editOps: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(L10n.t("edit.help"))
+                .font(.system(size: 12))
+                .foregroundStyle(.secondary)
+            Picker(L10n.t("tool.edit"), selection: $model.options.editMark) {
+                ForEach(EditMarkKind.allCases) { kind in
+                    Text(L10n.t(kind.titleKey)).tag(kind)
+                }
+            }
+            Button(L10n.t("edit.crop")) { model.cropSelected() }
+            Button(L10n.t("edit.clearCrop")) { model.clearCropOnSelection() }
+            Button(L10n.t("edit.replaceImage")) { model.replaceSelectedPageWithImage() }
+            Button(L10n.t("edit.clearMarks")) { model.clearMarksOnSelection() }
+        }
+        .buttonStyle(.bordered)
+        .controlSize(.small)
     }
 
     private var pagesOps: some View {
@@ -93,7 +114,7 @@ struct ToolInspectors: View {
                 }
             }
             Toggle(L10n.t("compress.grayscale"), isOn: $model.options.grayscale)
-            labeled(L10n.t("compress.before"), ByteCountFormatter.string(fromByteCount: model.sourceBytes, countStyle: .file))
+            labeled(L10n.t("compress.before"), L10n.formatBytes(model.sourceBytes))
         }
         .font(.system(size: 12))
     }

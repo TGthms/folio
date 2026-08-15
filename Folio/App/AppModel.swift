@@ -27,10 +27,17 @@ final class AppModel: ObservableObject {
     @Published var pageRangeDraft: String = ""
     @Published var localeGeneration: Int = L10n.generation
     @Published var sourceWasEncrypted = false
+    @Published var lastSaveURL: URL?
+    @Published private(set) var workspaceEpoch = 0
+    @Published private(set) var savedEpoch = 0
 
     var undoManager: UndoManager?
     private let recentsStore = RecentsStore()
     private var exportTask: Task<Void, Never>?
+
+    var hasUnsavedEdits: Bool {
+        !workspace.pages.isEmpty && workspaceEpoch != savedEpoch
+    }
 
     struct PasswordPrompt: Identifiable {
         let id = UUID()
@@ -51,19 +58,25 @@ final class AppModel: ObservableObject {
     var canExport: Bool { !workspace.pages.isEmpty && exportProgress == nil }
 
     var pageCountText: String {
-        let format = L10n.t("page_count")
-        return String(format: format, locale: .current, workspace.pages.count)
+        L10n.formatPageCount(workspace.pages.count)
     }
 
-    func registerUndo() {
+    func registerUndo(markDirty: Bool = true) {
         let snapshot = workspace
+        let previousEpoch = workspaceEpoch
+        if markDirty {
+            workspaceEpoch += 1
+        }
         undoManager?.registerUndo(withTarget: self) { target in
             Task { @MainActor in
                 let current = target.workspace
+                let currentEpoch = target.workspaceEpoch
                 target.workspace = snapshot
+                target.workspaceEpoch = previousEpoch
                 target.undoManager?.registerUndo(withTarget: target) { inner in
                     Task { @MainActor in
                         inner.workspace = current
+                        inner.workspaceEpoch = currentEpoch
                     }
                 }
             }
@@ -96,7 +109,7 @@ final class AppModel: ObservableObject {
             for index in 0..<document.pageCount {
                 imported.append(PageRef(source: .pdf(url: url, pageIndex: index)))
             }
-            registerUndo()
+            registerUndo(markDirty: false)
             workspace.append(imported)
         } catch FolioError.encrypted {
             sourceWasEncrypted = true
@@ -107,7 +120,7 @@ final class AppModel: ObservableObject {
     }
 
     private func importImage(_ url: URL) {
-        registerUndo()
+        registerUndo(markDirty: false)
         workspace.append([PageRef(source: .image(url: url))])
     }
 
@@ -219,6 +232,139 @@ final class AppModel: ObservableObject {
     func selectTool(_ next: Tool) {
         withAnimation(FolioMotion.snap) {
             tool = next
+            if next == .edit, !workspace.pages.isEmpty {
+                stageMode = .read
+            }
+        }
+    }
+
+    func addMark(_ mark: PageMark, to id: UUID) {
+        registerUndo()
+        workspace.addMark(mark, to: id)
+    }
+
+    func cropSelected() {
+        registerUndo()
+        for id in workspace.effectiveSelection() {
+            guard let page = workspace.pages.first(where: { $0.id == id }),
+                  let pdf = try? PDFIO.page(for: page)
+            else { continue }
+            let bounds = pdf.bounds(for: .mediaBox)
+            let inset = min(36, min(bounds.width, bounds.height) * 0.08)
+            workspace.setCrop(bounds.insetBy(dx: inset, dy: inset), on: [id])
+        }
+    }
+
+    func setCrop(_ rect: CGRect, on id: UUID) {
+        registerUndo()
+        workspace.setCrop(rect, on: [id])
+    }
+
+    func clearCropOnSelection() {
+        registerUndo()
+        workspace.setCrop(nil, on: workspace.effectiveSelection())
+    }
+
+    func clearMarksOnSelection() {
+        registerUndo()
+        workspace.clearMarks(on: workspace.effectiveSelection())
+    }
+
+    func replaceSelectedPageWithImage() {
+        let panel = NSOpenPanel()
+        panel.allowsMultipleSelection = false
+        panel.allowedContentTypes = [.png, .jpeg, .tiff, .heic, .image]
+        guard panel.runModal() == .OK, let url = panel.url else { return }
+        _ = url.startAccessingSecurityScopedResource()
+        registerUndo()
+        let target = workspace.focusedID ?? workspace.pages.first?.id
+        if let target {
+            workspace.replaceSource(.image(url: url), on: target)
+        }
+        refreshSourceBytes()
+    }
+
+    func saveDocument() {
+        guard canExport else {
+            banner = L10n.t("error.emptyWorkspace")
+            return
+        }
+        let destination: URL?
+        do {
+            destination = try resolveSaveDestination(promptIfNeeded: false)
+        } catch {
+            return
+        }
+        let url = destination
+        if let url, writesOriginal(url) || options.replaceOriginal {
+            let alert = NSAlert()
+            alert.messageText = L10n.t("export.replaceConfirm")
+            alert.informativeText = L10n.t("export.replaceMessage")
+            alert.addButton(withTitle: L10n.t("ok"))
+            alert.addButton(withTitle: L10n.t("cancel"))
+            if alert.runModal() != .alertFirstButtonReturn { return }
+        }
+        exportTask?.cancel()
+        exportTask = Task { await performSave() }
+    }
+
+    private func writesOriginal(_ url: URL) -> Bool {
+        let target = url.standardizedFileURL
+        return workspace.pages.contains { $0.sourceURL?.standardizedFileURL == target }
+    }
+
+    private func resolveSaveDestination(promptIfNeeded: Bool) throws -> URL? {
+        if options.replaceOriginal, let original = workspace.pages.first?.sourceURL {
+            return original
+        }
+        if let lastSaveURL {
+            return lastSaveURL
+        }
+        if promptIfNeeded {
+            return try pickDestinations(count: 1, ext: "pdf", suffixOverride: L10n.suffix(for: .edit))[0]
+        }
+        return nil
+    }
+
+    private func performSave() async {
+        exportSucceeded = false
+        exportProgress = 0
+        banner = nil
+        do {
+            let destination: URL
+            if let known = try resolveSaveDestination(promptIfNeeded: true) {
+                destination = known
+            } else {
+                throw FolioError.cancelled
+            }
+            let document = try await PDFBuilder.build(pages: workspace.pages, tool: .edit, options: options) { value in
+                Task { @MainActor in
+                    self.exportProgress = value
+                }
+            }
+            var writeOptions = options
+            writeOptions.userPassword = ""
+            writeOptions.ownerPassword = ""
+            try await PDFIO.write(document, to: destination, options: writeOptions, applyOCROption: false)
+            lastSaveURL = destination
+            savedEpoch = workspaceEpoch
+            outputBytes = PDFIO.fileSize(at: destination)
+            exportProgress = 1
+            exportSucceeded = true
+            hasExportedOnce = true
+            UserDefaults.standard.set(true, forKey: L10n.exportedOnceKey)
+            try? await Task.sleep(for: .milliseconds(1400))
+            exportSucceeded = false
+            exportProgress = nil
+        } catch is CancellationError {
+            exportProgress = nil
+            banner = L10n.t("error.cancelled")
+        } catch let error as FolioError {
+            exportProgress = nil
+            banner = L10n.t(error.localizationKey)
+        } catch {
+            exportProgress = nil
+            banner = L10n.t("error.writeFailed")
         }
     }
 
@@ -320,6 +466,10 @@ final class AppModel: ObservableObject {
             try await PDFIO.write(document, to: destinations[index], options: writeOptions, applyOCROption: applyOCR)
             lastSize = PDFIO.fileSize(at: destinations[index])
         }
+        if destinations.count == 1 {
+            lastSaveURL = destinations[0]
+        }
+        savedEpoch = workspaceEpoch
         outputBytes = lastSize
     }
 
@@ -356,7 +506,12 @@ final class AppModel: ObservableObject {
         }
     }
 
-    private func pickDestinations(count: Int, ext: String, numbered: Bool = false) throws -> [URL] {
+    private func pickDestinations(
+        count: Int,
+        ext: String,
+        numbered: Bool = false,
+        suffixOverride: String? = nil
+    ) throws -> [URL] {
         if options.replaceOriginal, let original = workspace.pages.first?.sourceURL, count == 1 {
             return [original]
         }
@@ -364,6 +519,8 @@ final class AppModel: ObservableObject {
         let suffix: String
         if numbered {
             suffix = ""
+        } else if let suffixOverride {
+            suffix = suffixOverride
         } else if count == 1 {
             suffix = L10n.suffix(for: tool)
         } else {

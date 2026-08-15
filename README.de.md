@@ -17,6 +17,7 @@ Ziehen Sie PDFs oder Bilder in einen Arbeitsbereich, ordnen Sie Seiten, wählen 
 - Schützen und entsperren
 - Text extrahieren und OCR
 - Echte Schwärzung (geschwärzte Seiten werden gerastert)
+- Bearbeiten: Hervorheben, Unterstreichen, Textfeld, Zeichnen, Zuschneiden, Seite durch Bild ersetzen. Markierungen werden beim Sichern / Export eingebrannt. Vorhandener PDF-Text wird nicht umgeschrieben.
 - Der Lesemodus scrollt durch alle Seiten im Arbeitsbereich
 - 30 Oberflächensprachen, einschließlich RTL; die Sprache folgt macOS
 - Sandbox. Keine Netzwerkberechtigung. Die Arbeit bleibt auf diesem Rechner.
@@ -44,14 +45,14 @@ Das Skript erzeugt `Folio.xcodeproj` und den String-Katalog neu und schreibt `bu
 
 Ziehen Sie PDFs oder Bilder auf das Fenster. Ordnen Sie Seiten, wählen Sie eine Aufgabe in der Seitenleiste und dann **Export…**.
 
-- `⌘O` Dateien hinzufügen · `⌘S` exportieren · `⌘P` drucken
+- `⌘O` Dateien hinzufügen · `⌘S` sichern · `⇧⌘S` exportieren · `⌘P` drucken
 - `⌘1` Seiten · `⌘2` Lesen (scrollt den ganzen Arbeitsbereich)
 - `⌘]` / `⌘[` nächste / vorherige Seite · `⌥⌘↑` / `⌥⌘↓` erste / letzte
 - Pfeiltasten, `j`/`k`, Page Up/Down, Home/End
 - `⌘R` / `⇧⌘R` drehen · `⌘⌫` aus dem Arbeitsbereich entfernen · `⌘A` alle Seiten
 - `⌘I` Inspektor · `⌘K` Befehlspalette · `⌘Z` rückgängig
 
-Die Sprache folgt **Systemeinstellungen → Sprache & Region**. Sie können sie in den Einstellungen überschreiben; wirksam ab dem nächsten Start.
+Die Sprache folgt **Systemeinstellungen → Sprache & Region**. Sie können sie in den Einstellungen überschreiben; die Oberfläche wechselt sofort.
 
 ## Tests
 

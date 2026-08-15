@@ -30,13 +30,17 @@ struct InspectorView: View {
             }
 
             ExportProgressButton(
-                title: L10n.t("export"),
+                title: L10n.t(model.tool == .edit ? "menu.save" : "export"),
                 savedTitle: L10n.t("export.saved"),
                 progress: model.exportProgress,
                 succeeded: model.exportSucceeded,
                 enabled: model.canExport
             ) {
-                model.export()
+                if model.tool == .edit {
+                    model.saveDocument()
+                } else {
+                    model.export()
+                }
             }
             .padding(16)
         }
@@ -49,13 +53,13 @@ struct InspectorView: View {
                 .font(.system(size: 11, weight: .semibold))
                 .foregroundStyle(FolioTheme.secondaryInk(for: scheme))
             labeled(L10n.t("inspector.pages"), model.pageCountText)
-            labeled(L10n.t("inspector.size"), ByteCountFormatter.string(fromByteCount: model.sourceBytes, countStyle: .file))
+            labeled(L10n.t("inspector.size"), L10n.formatBytes(model.sourceBytes))
             labeled(
                 L10n.t("inspector.encrypted"),
                 model.sourceWasEncrypted ? L10n.t("inspector.yes") : L10n.t("inspector.no")
             )
             if let output = model.outputBytes {
-                labeled(L10n.t("compress.after"), ByteCountFormatter.string(fromByteCount: output, countStyle: .file))
+                labeled(L10n.t("compress.after"), L10n.formatBytes(output))
             }
         }
     }

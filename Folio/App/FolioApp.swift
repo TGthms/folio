@@ -28,8 +28,11 @@ struct FolioApp: App {
             CommandGroup(replacing: .newItem) {
                 Button(L10n.t("menu.open")) { model.addFiles() }
                     .keyboardShortcut("o", modifiers: [.command])
-                Button(L10n.t("menu.export")) { model.export() }
+                Button(L10n.t("menu.save")) { model.saveDocument() }
                     .keyboardShortcut("s", modifiers: [.command])
+                    .disabled(!model.canExport)
+                Button(L10n.t("menu.export")) { model.export() }
+                    .keyboardShortcut("s", modifiers: [.command, .shift])
                     .disabled(!model.canExport)
             }
             CommandGroup(replacing: .printItem) {
@@ -92,7 +95,7 @@ struct FolioApp: App {
 
         Settings {
             SettingsView(model: model)
-                .frame(width: 420, height: 248)
+                .frame(width: 460, height: 320)
         }
     }
 }

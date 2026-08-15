@@ -2,6 +2,7 @@ import Foundation
 
 enum Tool: String, CaseIterable, Identifiable, Sendable {
     case pages
+    case edit
     case merge
     case split
     case compress
@@ -20,6 +21,7 @@ enum Tool: String, CaseIterable, Identifiable, Sendable {
     var group: ToolGroup {
         switch self {
         case .pages, .merge, .split: return .organize
+        case .edit: return .edit
         case .compress: return .reduce
         case .watermark, .pageNumbers: return .stamp
         case .imagesToPDF, .pdfToImages, .extractText, .ocr: return .convert
@@ -30,6 +32,7 @@ enum Tool: String, CaseIterable, Identifiable, Sendable {
     var symbol: String {
         switch self {
         case .pages: return "rectangle.on.rectangle.angled"
+        case .edit: return "pencil.and.outline"
         case .merge: return "square.stack"
         case .split: return "scissors"
         case .compress: return "arrow.down.forward.and.arrow.up.backward"
@@ -50,6 +53,7 @@ enum Tool: String, CaseIterable, Identifiable, Sendable {
     var suffixKey: String {
         switch self {
         case .merge, .pages: return "suffix.merged"
+        case .edit: return "suffix.edited"
         case .split: return "suffix.part"
         case .compress: return "suffix.compressed"
         case .watermark, .pageNumbers: return "suffix.stamped"
@@ -74,6 +78,7 @@ enum Tool: String, CaseIterable, Identifiable, Sendable {
 
 enum ToolGroup: String, CaseIterable, Identifiable, Sendable {
     case organize
+    case edit
     case reduce
     case stamp
     case convert

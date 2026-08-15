@@ -108,11 +108,60 @@ enum L10n {
         t(tool.suffixKey)
     }
 
+    static var formatLocale: Locale { Locale(identifier: catalogCode) }
+
+    static func formatPageCount(_ count: Int) -> String {
+        String(format: t("page_count"), locale: formatLocale, count)
+    }
+
+    static func formatBytes(_ bytes: Int64) -> String {
+        if bytes <= 0 { return t("size.zero") }
+        let magnitude = Double(bytes)
+        let value: Double
+        let unit: String
+        if magnitude >= 1_073_741_824 {
+            value = magnitude / 1_073_741_824
+            unit = t("size.gb")
+        } else if magnitude >= 1_048_576 {
+            value = magnitude / 1_048_576
+            unit = t("size.mb")
+        } else if magnitude >= 1_024 {
+            value = magnitude / 1_024
+            unit = t("size.kb")
+        } else {
+            return "\(bytes) \(t("size.bytesUnit"))"
+        }
+        let number = value.formatted(.number.precision(.fractionLength(0...1)).locale(formatLocale))
+        return "\(number) \(unit)"
+    }
+
     static func languageName(for code: String) -> String {
         if code == "system" { return t("settings.language.system") }
-        let locale = Locale(identifier: catalogCode)
-        return locale.localizedString(forIdentifier: code) ?? code
+        let key = "language.\(code)"
+        let value = string(key, locale: catalogCode)
+        if value != key { return value }
+        return endonyms[code] ?? englishLanguageNames[code] ?? code
     }
+
+    static let endonyms: [String: String] = [
+        "en": "English", "es": "Español", "fr": "Français", "de": "Deutsch", "it": "Italiano",
+        "pt-BR": "Português (Brasil)", "pt-PT": "Português (Portugal)", "nl": "Nederlands",
+        "da": "Dansk", "sv": "Svenska", "nb": "Norsk", "fi": "Suomi", "pl": "Polski",
+        "cs": "Čeština", "hu": "Magyar", "ro": "Română", "el": "Ελληνικά", "tr": "Türkçe",
+        "ru": "Русский", "uk": "Українська", "ar": "العربية", "he": "עברית", "hi": "हिन्दी",
+        "th": "ไทย", "vi": "Tiếng Việt", "id": "Bahasa Indonesia", "ja": "日本語", "ko": "한국어",
+        "zh-Hans": "简体中文", "zh-Hant": "繁體中文",
+    ]
+
+    static let englishLanguageNames: [String: String] = [
+        "en": "English", "es": "Spanish", "fr": "French", "de": "German", "it": "Italian",
+        "pt-BR": "Portuguese (Brazil)", "pt-PT": "Portuguese (Portugal)", "nl": "Dutch",
+        "da": "Danish", "sv": "Swedish", "nb": "Norwegian", "fi": "Finnish", "pl": "Polish",
+        "cs": "Czech", "hu": "Hungarian", "ro": "Romanian", "el": "Greek", "tr": "Turkish",
+        "ru": "Russian", "uk": "Ukrainian", "ar": "Arabic", "he": "Hebrew", "hi": "Hindi",
+        "th": "Thai", "vi": "Vietnamese", "id": "Indonesian", "ja": "Japanese", "ko": "Korean",
+        "zh-Hans": "Simplified Chinese", "zh-Hant": "Traditional Chinese",
+    ]
 
     private static func tableValue(_ key: String, locale: String) -> String? {
         guard

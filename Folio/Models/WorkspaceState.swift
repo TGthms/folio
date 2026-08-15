@@ -40,7 +40,13 @@ struct WorkspaceState: Equatable, Sendable {
         while index < pages.count {
             if targets.contains(pages[index].id) {
                 var copy = pages[index]
-                copy = PageRef(source: copy.source, rotation: copy.rotation, redactions: copy.redactions)
+                copy = PageRef(
+                    source: copy.source,
+                    rotation: copy.rotation,
+                    redactions: copy.redactions,
+                    marks: copy.marks,
+                    cropRect: copy.cropRect
+                )
                 pages.insert(copy, at: index + 1)
                 inserted.append(copy)
                 index += 2
@@ -80,6 +86,32 @@ struct WorkspaceState: Equatable, Sendable {
     mutating func addRedaction(_ redaction: Redaction, to id: UUID) {
         guard let index = pages.firstIndex(where: { $0.id == id }) else { return }
         pages[index].redactions.append(redaction)
+    }
+
+    mutating func addMark(_ mark: PageMark, to id: UUID) {
+        guard let index = pages.firstIndex(where: { $0.id == id }) else { return }
+        pages[index].marks.append(mark)
+    }
+
+    mutating func setCrop(_ rect: CGRect?, on targets: Set<UUID>) {
+        for index in pages.indices where targets.contains(pages[index].id) {
+            pages[index].cropRect = rect
+        }
+    }
+
+    mutating func replaceSource(_ source: PageSource, on id: UUID) {
+        guard let index = pages.firstIndex(where: { $0.id == id }) else { return }
+        pages[index].source = source
+        pages[index].rotation = 0
+        pages[index].redactions = []
+        pages[index].marks = []
+        pages[index].cropRect = nil
+    }
+
+    mutating func clearMarks(on targets: Set<UUID>) {
+        for index in pages.indices where targets.contains(pages[index].id) {
+            pages[index].marks = []
+        }
     }
 
     mutating func selectAll() {

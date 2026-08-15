@@ -134,4 +134,5 @@ struct ExportOptions: Equatable, Sendable {
     var splitRanges: String = ""
     var splitEvery: Int = 1
     var oneFilePerRange: Bool = true
+    var editMark: EditMarkKind = .highlight
 }

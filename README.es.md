@@ -17,6 +17,7 @@ Suelta PDFs o imágenes en un espacio de trabajo, ordena las páginas, elige un 
 - Proteger y desbloquear
 - Extraer texto y OCR
 - Redacción real (las páginas tachadas se rasterizan)
+- Editar: resaltar, subrayar, cuadro de texto, dibujar, recortar, reemplazar una página por una imagen. Las marcas se queman al guardar / exportar. El texto PDF existente no se reescribe.
 - El modo Lectura recorre todas las páginas del espacio de trabajo
 - 30 idiomas de interfaz, RTL incluido; el idioma sigue a macOS
 - Entorno aislado. Sin permiso de red. El trabajo se queda en este ordenador.
@@ -44,14 +45,14 @@ El script regenera `Folio.xcodeproj` y el catálogo de cadenas, y produce `build
 
 Suelta PDFs o imágenes en la ventana. Ordena las páginas, elige un trabajo en la barra lateral y pulsa **Export…**.
 
-- `⌘O` añadir archivos · `⌘S` exportar · `⌘P` imprimir
+- `⌘O` añadir archivos · `⌘S` guardar · `⇧⌘S` exportar · `⌘P` imprimir
 - `⌘1` Páginas · `⌘2` Lectura (recorre todo el espacio de trabajo)
 - `⌘]` / `⌘[` página siguiente / anterior · `⌥⌘↑` / `⌥⌘↓` primera / última
 - flechas, `j`/`k`, Page Up/Down, Home/End
 - `⌘R` / `⇧⌘R` rotar · `⌘⌫` quitar del espacio de trabajo · `⌘A` seleccionar todas
 - `⌘I` inspector · `⌘K` paleta de comandos · `⌘Z` deshacer
 
-El idioma sigue **Ajustes del Sistema → Idioma y región**. Puedes cambiarlo en Ajustes; se aplica en el siguiente arranque.
+El idioma sigue **Ajustes del Sistema → Idioma y región**. Puedes cambiarlo en Ajustes; la interfaz cambia al momento.
 
 ## Pruebas
 

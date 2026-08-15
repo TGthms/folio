@@ -10,6 +10,7 @@ struct CommandPalette: View {
             PaletteItem(id: $0.rawValue, title: L10n.t($0.titleKey), symbol: $0.symbol, kind: .tool($0))
         } + [
             PaletteItem(id: "add", title: L10n.t("command.addFiles"), symbol: "plus", kind: .add),
+            PaletteItem(id: "save", title: L10n.t("command.save"), symbol: "square.and.arrow.down", kind: .save),
             PaletteItem(id: "export", title: L10n.t("command.export"), symbol: "square.and.arrow.up", kind: .export),
         ] + model.recents.prefix(8).map {
             PaletteItem(id: $0.id.uuidString, title: $0.displayName, symbol: "doc", kind: .recent($0))
@@ -64,6 +65,8 @@ struct CommandPalette: View {
             model.selectTool(tool)
         case .add:
             model.addFiles()
+        case .save:
+            model.saveDocument()
         case .export:
             model.export()
         case .recent(let recent):
@@ -77,6 +80,7 @@ struct PaletteItem: Identifiable {
     enum Kind {
         case tool(Tool)
         case add
+        case save
         case export
         case recent(RecentItem)
     }

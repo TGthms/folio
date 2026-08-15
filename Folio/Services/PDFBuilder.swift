@@ -26,6 +26,9 @@ enum PDFBuilder {
             if tool == .redact || !ref.redactions.isEmpty {
                 page = RedactService.burn(page, redactions: ref.redactions, fill: options.redactFill)
             }
+            if ref.hasEdits {
+                page = MarkService.burn(page, marks: ref.marks, crop: ref.cropRect)
+            }
 
             if tool == .compress {
                 if options.compress == .high {

@@ -11,22 +11,31 @@ struct SettingsView: View {
 
     var body: some View {
         let _ = model.localeGeneration
-        VStack(alignment: .leading, spacing: 16) {
+        VStack(alignment: .leading, spacing: 18) {
             Text(L10n.t("settings.title"))
                 .font(.system(size: 18, weight: .semibold))
-            Picker(L10n.t("settings.language"), selection: $language) {
-                Text(L10n.t("settings.language.system")).tag("system")
-                ForEach(L10n.supportedCodes, id: \.self) { code in
-                    Text(L10n.languageName(for: code)).tag(code)
+            VStack(alignment: .leading, spacing: 8) {
+                Text(L10n.t("settings.language"))
+                    .font(.system(size: 12, weight: .medium))
+                Picker(L10n.t("settings.language"), selection: $language) {
+                    Text(L10n.languageName(for: "system")).tag("system")
+                    ForEach(L10n.supportedCodes, id: \.self) { code in
+                        Text(L10n.languageName(for: code)).tag(code)
+                    }
                 }
+                .labelsHidden()
+                .pickerStyle(.menu)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .id(model.localeGeneration)
+                .onChange(of: language) { _, newValue in
+                    model.applyLanguage(newValue == "system" ? nil : newValue)
+                }
+                Text(L10n.t("settings.language.relaunch"))
+                    .font(.system(size: 12))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
-            .onChange(of: language) { _, newValue in
-                model.applyLanguage(newValue == "system" ? nil : newValue)
-            }
-            Text(L10n.t("settings.language.relaunch"))
-                .font(.system(size: 12))
-                .foregroundStyle(.secondary)
-            Spacer()
+            Spacer(minLength: 8)
             HStack(alignment: .firstTextBaseline) {
                 Text(L10n.t("settings.copyright"))
                 Spacer(minLength: 12)

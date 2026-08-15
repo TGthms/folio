@@ -17,6 +17,7 @@ Déposez des PDF ou des images dans un seul espace de travail, organisez les pag
 - Protéger et déverrouiller
 - Extraire le texte et OCR
 - Rédaction réelle (les pages caviardées sont rastérisées)
+- Édition : surlignage, soulignement, zone de texte, dessin, recadrage, remplacement d’une page par une image. Les marques sont brûlées à l’enregistrement / l’export. Le texte PDF existant n’est pas réécrit.
 - Le mode Lecture fait défiler toutes les pages de l’espace de travail
 - 30 langues d’interface, RTL compris ; la langue suit macOS
 - Sandbox. Aucun droit réseau. Le travail reste sur cet ordinateur.
@@ -44,14 +45,14 @@ Le script régénère `Folio.xcodeproj` et le catalogue de chaînes, puis produi
 
 Déposez des PDF ou des images sur la fenêtre. Organisez les pages, choisissez une tâche dans la barre latérale, puis **Export…**.
 
-- `⌘O` ajouter des fichiers · `⌘S` exporter · `⌘P` imprimer
+- `⌘O` ajouter des fichiers · `⌘S` enregistrer · `⇧⌘S` exporter · `⌘P` imprimer
 - `⌘1` Pages · `⌘2` Lecture (fait défiler tout l’espace de travail)
 - `⌘]` / `⌘[` page suivante / précédente · `⌥⌘↑` / `⌥⌘↓` première / dernière
 - flèches, `j`/`k`, Page Up/Down, Home/End
 - `⌘R` / `⇧⌘R` pivoter · `⌘⌫` retirer de l’espace de travail · `⌘A` tout sélectionner
 - `⌘I` inspecteur · `⌘K` palette de commandes · `⌘Z` annuler
 
-La langue suit **Réglages Système → Langue et région**. Vous pouvez la remplacer dans les réglages ; cela s’applique au prochain lancement.
+La langue suit **Réglages Système → Langue et région**. Vous pouvez la remplacer dans les réglages ; l’interface change tout de suite.
 
 ## Tests
 
