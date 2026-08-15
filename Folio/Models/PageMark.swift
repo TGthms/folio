@@ -31,6 +31,7 @@ struct PageMark: Identifiable, Hashable, Sendable {
 }
 
 enum EditMarkKind: String, CaseIterable, Identifiable, Sendable {
+    case select
     case highlight
     case underline
     case textBox
@@ -41,6 +42,7 @@ enum EditMarkKind: String, CaseIterable, Identifiable, Sendable {
 
     var titleKey: String {
         switch self {
+        case .select: return "edit.select"
         case .highlight: return "edit.highlight"
         case .underline: return "edit.underline"
         case .textBox: return "edit.textBox"
@@ -51,11 +53,30 @@ enum EditMarkKind: String, CaseIterable, Identifiable, Sendable {
 
     var markKind: PageMarkKind? {
         switch self {
+        case .select, .crop: return nil
         case .highlight: return .highlight
         case .underline: return .underline
         case .textBox: return .textBox
         case .draw: return .stroke
-        case .crop: return nil
+        }
+    }
+}
+
+enum EditInteraction {
+    /// Highlight / underline / select use PDFView’s own pointer so the document still scrolls.
+    static func usesNativePointer(_ tool: Tool, mark: EditMarkKind) -> Bool {
+        switch tool {
+        case .redact:
+            return false
+        case .edit:
+            switch mark {
+            case .select, .highlight, .underline:
+                return true
+            case .textBox, .draw, .crop:
+                return false
+            }
+        default:
+            return true
         }
     }
 }

@@ -23,6 +23,7 @@ struct ReaderView: View {
                     onMark: { mark, id in model.addMark(mark, to: id) },
                     onRedaction: { rect, id in model.addRedaction(rect, to: id) },
                     onCrop: { rect, id in model.setCrop(rect, on: id) },
+                    onSelectMark: { model.selectedMarkID = $0 },
                     onAskText: { promptForText() }
                 )
             } else {

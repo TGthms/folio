@@ -29441,186 +29441,370 @@
         }
       }
     },
-    "edit.help": {
+    "edit.select": {
       "localizations": {
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Select"
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Desplace el documento con normalidad. Arrastre para añadir la marca en la página bajo el puntero. Guardar escribe las marcas en el archivo."
+            "value": "Seleccionar"
           }
         },
         "fr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Faites défiler le document comme d’habitude. Faites glisser pour ajouter la marque sur la page sous le pointeur. Enregistrer écrit les marques dans le fichier."
+            "value": "Sélection"
           }
         },
         "de": {
           "stringUnit": {
             "state": "translated",
-            "value": "Rollen Sie das Dokument wie gewohnt. Ziehen Sie, um die Markierung auf der Seite unter dem Zeiger zu setzen. Sichern schreibt die Markierungen in die Datei."
+            "value": "Auswählen"
           }
         },
         "it": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Seleziona"
           }
         },
         "pt-BR": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Selecionar"
           }
         },
         "pt-PT": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Selecionar"
           }
         },
         "nl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Selecteren"
           }
         },
         "da": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Vælg"
           }
         },
         "sv": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Markera"
           }
         },
         "nb": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Velg"
           }
         },
         "fi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Valitse"
           }
         },
         "pl": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Zaznacz"
           }
         },
         "cs": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Vybrat"
           }
         },
         "hu": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Kijelölés"
           }
         },
         "ro": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Selectează"
           }
         },
         "el": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Επιλογή"
           }
         },
         "tr": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Seç"
           }
         },
         "ru": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Выбор"
           }
         },
         "uk": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Вибір"
           }
         },
         "ar": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "تحديد"
           }
         },
         "he": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "בחירה"
           }
         },
         "hi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "चुनें"
           }
         },
         "th": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "เลือก"
           }
         },
         "vi": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Chọn"
           }
         },
         "id": {
           "stringUnit": {
             "state": "translated",
-            "value": "Scroll the document as usual. Drag to add the selected mark on the page under the pointer. Save writes marks into the file."
+            "value": "Pilih"
           }
         },
         "ja": {
           "stringUnit": {
             "state": "translated",
-            "value": "いつもどおりスクロールできます。ドラッグすると、ポインタ下のページに選んだマークが付きます。保存でファイルに書き込みます。"
+            "value": "選択"
           }
         },
         "ko": {
           "stringUnit": {
             "state": "translated",
-            "value": "문서는 평소처럼 스크롤하세요. 드래그하면 포인터 아래 페이지에 선택한 표시가 붙습니다. 저장하면 파일에 씁니다."
+            "value": "선택"
           }
         },
         "zh-Hans": {
           "stringUnit": {
             "state": "translated",
-            "value": "像平常一样滚动文档。拖拽即可在指针所在页面加上所选标记。存储会把标记写入文件。"
+            "value": "选择"
           }
         },
         "zh-Hant": {
           "stringUnit": {
             "state": "translated",
-            "value": "像平常一樣捲動文件。拖曳即可在指標所在頁面加上所選標記。儲存會把標記寫入檔案。"
+            "value": "選取"
+          }
+        }
+      }
+    },
+    "edit.help": {
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desplace el PDF con normalidad. Resaltar y subrayar siguen la selección de texto. Dibujar, texto y recortar se hacen arrastrando. Guardar escribe las marcas en el archivo."
+          }
+        },
+        "fr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Faites défiler le PDF comme d’habitude. Surlignage et soulignement suivent la sélection de texte. Dessin, texte et recadrage se font par glisser. Enregistrer écrit les marques dans le fichier."
+          }
+        },
+        "de": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Rollen Sie das PDF wie gewohnt. Hervorheben und Unterstreichen folgen der Textauswahl. Zeichnen, Text und Zuschnitt per Ziehen. Sichern schreibt die Markierungen in die Datei."
+          }
+        },
+        "it": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "pt-BR": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "pt-PT": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "nl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "da": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "sv": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "nb": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "fi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "pl": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "cs": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "hu": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "ro": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "el": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "tr": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "ru": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "uk": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "ar": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "he": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "hi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "th": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "vi": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "id": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Scroll the PDF as usual. Highlight and underline follow a text selection. Draw, text, and crop use a drag. Save writes the marks into the file."
+          }
+        },
+        "ja": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF はいつもどおりスクロールできます。ハイライトと下線は選択したテキストに付きます。描画・テキスト・トリミングはドラッグです。保存でファイルに書き込みます。"
+          }
+        },
+        "ko": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "PDF는 평소처럼 스크롤하세요. 강조와 밑줄은 선택한 텍스트에 붙습니다. 그리기, 텍스트, 자르기는 드래그입니다. 저장하면 파일에 씁니다."
+          }
+        },
+        "zh-Hans": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "像平常一样滚动 PDF。高亮和下划线跟从所选文字。绘制、文本框和裁剪用拖拽。存储会把标记写入文件。"
+          }
+        },
+        "zh-Hant": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "像平常一樣捲動 PDF。反白與底線跟從所選文字。繪製、文字框和裁剪用拖曳。儲存會把標記寫入檔案。"
           }
         }
       }

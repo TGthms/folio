@@ -30,6 +30,7 @@ final class AppModel: ObservableObject {
     @Published var lastSaveURL: URL?
     @Published private(set) var workspaceEpoch = 0
     @Published private(set) var savedEpoch = 0
+    @Published var selectedMarkID: UUID?
 
     var undoManager: UndoManager?
     private let recentsStore = RecentsStore()
@@ -147,9 +148,27 @@ final class AppModel: ObservableObject {
     }
 
     func deleteSelected() {
+        if removeSelectedMarkIfAny() { return }
         registerUndo()
         workspace.deleteSelected()
         refreshSourceBytes()
+    }
+
+    @discardableResult
+    func removeSelectedMarkIfAny() -> Bool {
+        guard tool == .edit, let id = selectedMarkID else { return false }
+        return removeMark(id)
+    }
+
+    @discardableResult
+    func removeMark(_ id: UUID) -> Bool {
+        guard workspace.pages.contains(where: { $0.marks.contains(where: { $0.id == id }) }) else {
+            return false
+        }
+        registerUndo()
+        _ = workspace.removeMark(id: id)
+        selectedMarkID = nil
+        return true
     }
 
     func reversePages() {
@@ -249,6 +268,7 @@ final class AppModel: ObservableObject {
     func addMark(_ mark: PageMark, to id: UUID) {
         registerUndo()
         workspace.addMark(mark, to: id)
+        selectedMarkID = mark.id
     }
 
     func cropSelected() {
@@ -276,6 +296,7 @@ final class AppModel: ObservableObject {
     func clearMarksOnSelection() {
         registerUndo()
         workspace.clearMarks(on: workspace.effectiveSelection())
+        selectedMarkID = nil
     }
 
     func replaceSelectedPageWithImage() {

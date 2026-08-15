@@ -106,6 +106,64 @@ final class FolioEditTests: XCTestCase {
         XCTAssertEqual(model.stageMode, .pages)
     }
 
+    func testNativePointerKeepsScrollOnSelectAndHighlight() {
+        XCTAssertTrue(EditInteraction.usesNativePointer(.edit, mark: .select))
+        XCTAssertTrue(EditInteraction.usesNativePointer(.edit, mark: .highlight))
+        XCTAssertTrue(EditInteraction.usesNativePointer(.edit, mark: .underline))
+        XCTAssertFalse(EditInteraction.usesNativePointer(.edit, mark: .draw))
+        XCTAssertFalse(EditInteraction.usesNativePointer(.redact, mark: .select))
+        XCTAssertTrue(EditInteraction.usesNativePointer(.pages, mark: .draw))
+    }
+
+    func testAnnotationServiceWritesFolioHighlight() {
+        let page = PDFPageGraphics.makePage(text: "Hello")
+        let mark = PageMark(kind: .highlight, rect: CGRect(x: 70, y: 680, width: 90, height: 18))
+        AnnotationService.sync(page: page, marks: [mark], crop: nil)
+        XCTAssertEqual(page.annotations.count, 1)
+        let annotation = page.annotations[0]
+        XCTAssertEqual(annotation.userName, AnnotationService.owner)
+        XCTAssertEqual(AnnotationService.markID(from: annotation), mark.id)
+        XCTAssertTrue((annotation.type ?? "").localizedCaseInsensitiveContains("highlight"))
+    }
+
+    func testAnnotationSyncReplacesPreviousFolioMarks() {
+        let page = PDFPageGraphics.makePage(text: "Hello")
+        let first = PageMark(kind: .highlight, rect: CGRect(x: 10, y: 10, width: 40, height: 10))
+        AnnotationService.sync(page: page, marks: [first], crop: nil)
+        let second = PageMark(kind: .underline, rect: CGRect(x: 20, y: 20, width: 50, height: 10))
+        AnnotationService.sync(page: page, marks: [second], crop: nil)
+        XCTAssertEqual(page.annotations.count, 1)
+        XCTAssertEqual(AnnotationService.markID(from: page.annotations[0]), second.id)
+    }
+
+    func testRemoveMarkLeavesOtherPagesAlone() {
+        var state = WorkspaceState()
+        var a = PageRef(source: .blank(size: CGSize(width: 10, height: 10)))
+        var b = PageRef(source: .blank(size: CGSize(width: 10, height: 10)))
+        let keep = PageMark(kind: .highlight, rect: CGRect(x: 1, y: 1, width: 4, height: 4))
+        let gone = PageMark(kind: .highlight, rect: CGRect(x: 1, y: 1, width: 4, height: 4))
+        a.marks = [keep]
+        b.marks = [gone]
+        state.append([a, b])
+        XCTAssertTrue(state.removeMark(id: gone.id))
+        XCTAssertEqual(state.pages[0].marks.map(\.id), [keep.id])
+        XCTAssertTrue(state.pages[1].marks.isEmpty)
+    }
+
+    func testDeleteSelectedRemovesMarkInsteadOfPage() {
+        let model = AppModel()
+        var page = PageRef(source: .blank(size: CGSize(width: 10, height: 10)))
+        let mark = PageMark(kind: .highlight, rect: CGRect(x: 1, y: 1, width: 4, height: 4))
+        page.marks = [mark]
+        model.workspace.append([page])
+        model.tool = .edit
+        model.selectedMarkID = mark.id
+        model.deleteSelected()
+        XCTAssertEqual(model.workspace.pages.count, 1)
+        XCTAssertTrue(model.workspace.pages[0].marks.isEmpty)
+        XCTAssertNil(model.selectedMarkID)
+    }
+
     func testSaveDoesNotWriteUntilDestinationIsChosen() async throws {
         let model = AppModel()
         let url = try writeFixture(name: "SAVE", pages: 1)

@@ -32,6 +32,7 @@ enum ReadDocumentBuilder {
             if !ref.redactions.isEmpty {
                 page = RedactService.burn(page, redactions: ref.redactions, fill: .black)
             }
+            AnnotationService.sync(page: page, marks: ref.marks, crop: ref.cropRect)
             document.insert(page, at: index)
         }
         return document

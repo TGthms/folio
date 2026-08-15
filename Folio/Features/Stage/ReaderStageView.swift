@@ -12,42 +12,53 @@ struct ReaderStage: NSViewRepresentable {
     var onMark: (PageMark, UUID) -> Void
     var onRedaction: (CGRect, UUID) -> Void
     var onCrop: (CGRect, UUID) -> Void
+    var onSelectMark: (UUID?) -> Void
     var onAskText: () -> String?
 
     func makeCoordinator() -> Coordinator {
         Coordinator()
     }
 
-    func makeNSView(context: Context) -> ReaderHostView {
-        let host = ReaderHostView()
-        context.coordinator.install(on: host)
-        return host
+    func makeNSView(context: Context) -> FolioPDFView {
+        let view = FolioPDFView()
+        view.autoScales = true
+        view.minScaleFactor = 0.25
+        view.maxScaleFactor = 8
+        view.displayMode = .singlePageContinuous
+        view.displayDirection = .vertical
+        view.backgroundColor = .clear
+        view.delegate = context.coordinator
+        context.coordinator.install(on: view)
+        return view
     }
 
-    func updateNSView(_ host: ReaderHostView, context: Context) {
+    func updateNSView(_ view: FolioPDFView, context: Context) {
         context.coordinator.onVisiblePage = onVisiblePage
-        host.overlay.tool = tool
-        host.overlay.editMark = editMark
-        host.overlay.pages = pages
-        host.overlay.onMark = onMark
-        host.overlay.onRedaction = onRedaction
-        host.overlay.onCrop = onCrop
-        host.overlay.onAskText = onAskText
-        host.overlay.window?.invalidateCursorRects(for: host.overlay)
+        view.tool = tool
+        view.editMark = editMark
+        view.pages = pages
+        view.onMark = onMark
+        view.onRedaction = onRedaction
+        view.onCrop = onCrop
+        view.onSelectMark = onSelectMark
+        view.onAskText = onAskText
 
-        if host.pdfView.document !== document {
+        if view.document !== document {
             context.coordinator.ignorePageChange = true
-            host.pdfView.autoScales = true
-            host.pdfView.document = document
+            view.document = document
             context.coordinator.resetFocus()
-            context.coordinator.observeDocumentScroll(host.pdfView, overlay: host.overlay)
             context.coordinator.ignorePageChange = false
-            DispatchQueue.main.async { [weak host] in
-                host?.pdfView.autoScales = false
+            context.coordinator.lastAnnotationSync = ""
+        }
+        if let document = view.document {
+            let fingerprint = AnnotationService.fingerprint(pages: pages)
+            if fingerprint != context.coordinator.lastAnnotationSync {
+                AnnotationService.sync(document: document, pages: pages)
+                context.coordinator.lastAnnotationSync = fingerprint
             }
         }
-        context.coordinator.applyFocus(focusedIndex, in: host.pdfView)
-        host.overlay.needsDisplay = true
+        context.coordinator.applyFocus(focusedIndex, in: view)
+        view.window?.invalidateCursorRects(for: view)
     }
 
     final class Coordinator: NSObject, PDFViewDelegate, @unchecked Sendable {
@@ -55,47 +66,31 @@ struct ReaderStage: NSViewRepresentable {
         var ignorePageChange = false
         var lastVisible = -1
         var lastApplied = -1
+        var lastAnnotationSync = ""
         private var pageObserver: NSObjectProtocol?
-        private var scaleObserver: NSObjectProtocol?
-        private var scrollObserver: NSObjectProtocol?
+        private var annotationObserver: NSObjectProtocol?
 
         func resetFocus() {
             lastVisible = -1
             lastApplied = -1
         }
 
-        func install(on host: ReaderHostView) {
-            host.pdfView.delegate = self
+        func install(on view: FolioPDFView) {
             pageObserver = NotificationCenter.default.addObserver(
                 forName: .PDFViewPageChanged,
-                object: host.pdfView,
+                object: view,
                 queue: .main
-            ) { [weak self, weak host] _ in
-                guard let self, let host, !self.ignorePageChange else { return }
-                self.noteVisiblePage(in: host.pdfView)
-                host.overlay.needsDisplay = true
+            ) { [weak self, weak view] _ in
+                guard let self, let view, !self.ignorePageChange else { return }
+                self.noteVisiblePage(in: view)
             }
-            scaleObserver = NotificationCenter.default.addObserver(
-                forName: .PDFViewScaleChanged,
-                object: host.pdfView,
+            annotationObserver = NotificationCenter.default.addObserver(
+                forName: .PDFViewAnnotationHit,
+                object: view,
                 queue: .main
-            ) { [weak host] _ in
-                host?.overlay.needsDisplay = true
-            }
-            observeDocumentScroll(host.pdfView, overlay: host.overlay)
-        }
-
-        func observeDocumentScroll(_ pdfView: PDFView, overlay: ReaderOverlayView) {
-            if let scrollObserver {
-                NotificationCenter.default.removeObserver(scrollObserver)
-            }
-            pdfView.documentView?.postsBoundsChangedNotifications = true
-            scrollObserver = NotificationCenter.default.addObserver(
-                forName: NSView.boundsDidChangeNotification,
-                object: pdfView.documentView,
-                queue: .main
-            ) { [weak overlay] _ in
-                overlay?.needsDisplay = true
+            ) { [weak view] notification in
+                let annotation = notification.userInfo?["PDFAnnotationHit"] as? PDFAnnotation
+                view?.onSelectMark?(annotation.flatMap(AnnotationService.markID(from:)))
             }
         }
 
@@ -104,9 +99,7 @@ struct ReaderStage: NSViewRepresentable {
                 to: focusedIndex,
                 lastVisible: lastVisible,
                 lastApplied: lastApplied
-            ) else {
-                return
-            }
+            ) else { return }
             guard let document = pdfView.document,
                   focusedIndex < document.pageCount,
                   let page = document.page(at: focusedIndex)
@@ -129,173 +122,124 @@ struct ReaderStage: NSViewRepresentable {
 
         deinit {
             if let pageObserver { NotificationCenter.default.removeObserver(pageObserver) }
-            if let scaleObserver { NotificationCenter.default.removeObserver(scaleObserver) }
-            if let scrollObserver { NotificationCenter.default.removeObserver(scrollObserver) }
+            if let annotationObserver { NotificationCenter.default.removeObserver(annotationObserver) }
         }
     }
 }
 
-final class ReaderHostView: NSView {
-    let pdfView = PDFView()
-    let overlay = ReaderOverlayView()
+final class FolioPDFView: PDFView {
+    var tool: Tool = .pages {
+        didSet { if tool != oldValue { window?.invalidateCursorRects(for: self) } }
+    }
+    var editMark: EditMarkKind = .select {
+        didSet { if editMark != oldValue { window?.invalidateCursorRects(for: self) } }
+    }
+    var pages: [PageRef] = []
+    var onMark: ((PageMark, UUID) -> Void)?
+    var onRedaction: ((CGRect, UUID) -> Void)?
+    var onCrop: ((CGRect, UUID) -> Void)?
+    var onSelectMark: ((UUID?) -> Void)?
+    var onAskText: (() -> String?)?
+
+    private var dragStart: NSPoint?
+    private var strokePoints: [NSPoint] = []
+    private let rubber = CAShapeLayer()
 
     override init(frame frameRect: NSRect) {
         super.init(frame: frameRect)
-        pdfView.translatesAutoresizingMaskIntoConstraints = false
-        overlay.translatesAutoresizingMaskIntoConstraints = false
-        pdfView.autoScales = true
-        pdfView.minScaleFactor = 0.25
-        pdfView.maxScaleFactor = 4
-        pdfView.displayMode = .singlePageContinuous
-        pdfView.displayDirection = .vertical
-        pdfView.backgroundColor = .clear
-        overlay.pdfView = pdfView
-        addSubview(pdfView)
-        addSubview(overlay)
-        NSLayoutConstraint.activate([
-            pdfView.leadingAnchor.constraint(equalTo: leadingAnchor),
-            pdfView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            pdfView.topAnchor.constraint(equalTo: topAnchor),
-            pdfView.bottomAnchor.constraint(equalTo: bottomAnchor),
-            overlay.leadingAnchor.constraint(equalTo: pdfView.leadingAnchor),
-            overlay.trailingAnchor.constraint(equalTo: pdfView.trailingAnchor),
-            overlay.topAnchor.constraint(equalTo: pdfView.topAnchor),
-            overlay.bottomAnchor.constraint(equalTo: pdfView.bottomAnchor),
-        ])
+        wantsLayer = true
+        rubber.fillColor = NSColor.systemYellow.withAlphaComponent(0.22).cgColor
+        rubber.strokeColor = NSColor.systemYellow.cgColor
+        rubber.lineWidth = 1
+        rubber.lineCap = .round
+        rubber.lineJoin = .round
+        layer?.addSublayer(rubber)
     }
 
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-final class ReaderOverlayView: NSView {
-    weak var pdfView: PDFView?
-    var tool: Tool = .pages {
-        didSet { if tool != oldValue { window?.invalidateCursorRects(for: self) } }
-    }
-    var editMark: EditMarkKind = .highlight
-    var pages: [PageRef] = []
-    var onMark: ((PageMark, UUID) -> Void)?
-    var onRedaction: ((CGRect, UUID) -> Void)?
-    var onCrop: ((CGRect, UUID) -> Void)?
-    var onAskText: (() -> String?)?
-
-    private var dragStart: CGPoint?
-    private var dragCurrent: CGPoint?
-    private var strokeViewPoints: [CGPoint] = []
-
-    override var isOpaque: Bool { false }
-    override var acceptsFirstResponder: Bool { capturing }
-    override var isFlipped: Bool { pdfView?.isFlipped ?? false }
-
-    private var capturing: Bool {
-        tool == .edit || tool == .redact
-    }
+    override var acceptsFirstResponder: Bool { true }
 
     override func resetCursorRects() {
-        if capturing {
+        if EditInteraction.usesNativePointer(tool, mark: editMark) {
+            addCursorRect(bounds, cursor: .iBeam)
+        } else if tool == .edit || tool == .redact {
             addCursorRect(bounds, cursor: .crosshair)
+        } else {
+            super.resetCursorRects()
         }
-    }
-
-    override func hitTest(_ point: NSPoint) -> NSView? {
-        capturing ? super.hitTest(point) : nil
-    }
-
-    override func scrollWheel(with event: NSEvent) {
-        pdfView?.scrollWheel(with: event)
-    }
-
-    override func magnify(with event: NSEvent) {
-        pdfView?.magnify(with: event)
-    }
-
-    override func smartMagnify(with event: NSEvent) {
-        pdfView?.smartMagnify(with: event)
-    }
-
-    override func beginGesture(with event: NSEvent) {
-        pdfView?.beginGesture(with: event)
-    }
-
-    override func endGesture(with event: NSEvent) {
-        pdfView?.endGesture(with: event)
-    }
-
-    override func rotate(with event: NSEvent) {
-        pdfView?.rotate(with: event)
     }
 
     override func mouseDown(with event: NSEvent) {
-        guard capturing else {
-            pdfView?.mouseDown(with: event)
-            return
-        }
         let point = convert(event.locationInWindow, from: nil)
         dragStart = point
-        dragCurrent = point
-        strokeViewPoints = [point]
-        needsDisplay = true
+        strokePoints = [point]
+        if EditInteraction.usesNativePointer(tool, mark: editMark) {
+            super.mouseDown(with: event)
+            return
+        }
+        updateRubber(to: point)
     }
 
     override func mouseDragged(with event: NSEvent) {
-        guard capturing, dragStart != nil else {
-            pdfView?.mouseDragged(with: event)
+        let point = convert(event.locationInWindow, from: nil)
+        if EditInteraction.usesNativePointer(tool, mark: editMark) {
+            super.mouseDragged(with: event)
             return
         }
-        let point = convert(event.locationInWindow, from: nil)
-        dragCurrent = point
         if tool == .edit, editMark == .draw {
-            strokeViewPoints.append(point)
+            strokePoints.append(point)
         }
-        needsDisplay = true
+        updateRubber(to: point)
     }
 
     override func mouseUp(with event: NSEvent) {
-        guard capturing else {
-            pdfView?.mouseUp(with: event)
+        let end = convert(event.locationInWindow, from: nil)
+        defer {
+            dragStart = nil
+            strokePoints = []
+            rubber.path = nil
+        }
+        if EditInteraction.usesNativePointer(tool, mark: editMark) {
+            super.mouseUp(with: event)
+            if applyTextSelectionMarks() { return }
+            commitAreaIfNeeded(end: end)
             return
         }
-        let end = convert(event.locationInWindow, from: nil)
-        commitGesture(end: end)
-        dragStart = nil
-        dragCurrent = nil
-        strokeViewPoints = []
-        needsDisplay = true
+        commitAreaIfNeeded(end: end)
     }
 
-    override func draw(_ dirtyRect: NSRect) {
-        super.draw(dirtyRect)
-        guard let pdfView, let document = pdfView.document else { return }
-        for (index, page) in pages.enumerated() {
-            guard index < document.pageCount, let pdfPage = document.page(at: index) else { continue }
-            if let crop = page.cropRect {
-                drawCropVeil(crop, page: pdfPage, pdfView: pdfView)
-            }
-            for redaction in page.redactions {
-                let rect = pdfView.convert(redaction.rect, from: pdfPage)
-                FolioOverlayStyle.vermilion.withAlphaComponent(0.28).setFill()
-                NSBezierPath(roundedRect: rect, xRadius: 2, yRadius: 2).fill()
-            }
-            for mark in page.marks {
-                drawCommitted(mark, page: pdfPage, pdfView: pdfView)
-            }
+    private func applyTextSelectionMarks() -> Bool {
+        guard tool == .edit,
+              let kind = editMark.markKind,
+              kind == .highlight || kind == .underline,
+              let selection = currentSelection
+        else { return false }
+        let pieces = AnnotationService.marks(from: selection, kind: kind)
+        guard !pieces.isEmpty else { return false }
+        for piece in pieces {
+            let index = document?.index(for: piece.page) ?? NSNotFound
+            guard let id = ReaderPageIndex.id(at: index, in: pages.map(\.id)) else { continue }
+            onMark?(piece.mark, id)
         }
-        drawLivePreview()
+        clearSelection()
+        return true
     }
 
-    private func commitGesture(end: CGPoint) {
-        guard let start = dragStart, let pdfView else { return }
+    private func commitAreaIfNeeded(end: NSPoint) {
+        guard let start = dragStart else { return }
         if tool == .edit, editMark == .draw {
-            commitStroke(in: pdfView)
+            commitStroke()
             return
         }
         let viewRect = EditGestureMath.rect(from: start, to: end)
-        guard EditGestureMath.isCommitable(viewRect) else { return }
-        guard let target = targetPage(at: start, in: pdfView) else { return }
-        let pageRect = pdfView.convert(viewRect, to: target.page)
+        guard EditGestureMath.isCommitable(viewRect),
+              let target = targetPage(at: start)
+        else { return }
+        let pageRect = convert(viewRect, to: target.page)
         if tool == .redact {
             onRedaction?(pageRect, target.id)
             return
@@ -304,137 +248,61 @@ final class ReaderOverlayView: NSView {
             onCrop?(pageRect, target.id)
             return
         }
-        var text = ""
         if editMark == .textBox {
-            guard let entered = onAskText?() else { return }
-            text = entered
+            guard let text = onAskText?() else { return }
+            onMark?(PageMark(kind: .textBox, rect: pageRect, text: text), target.id)
+            return
         }
         guard let kind = editMark.markKind else { return }
-        onMark?(PageMark(kind: kind, rect: pageRect, text: text), target.id)
+        onMark?(PageMark(kind: kind, rect: pageRect), target.id)
     }
 
-    private func commitStroke(in pdfView: PDFView) {
-        guard strokeViewPoints.count > 1, let first = strokeViewPoints.first else { return }
-        guard let target = targetPage(at: first, in: pdfView) else { return }
-        let pdfPoints = strokeViewPoints.map { pdfView.convert($0, to: target.page) }
-        guard pdfPoints.count > 1 else { return }
-        onMark?(PageMark(kind: .stroke, rect: EditGestureMath.strokeBounds(pdfPoints), points: pdfPoints), target.id)
+    private func commitStroke() {
+        guard strokePoints.count > 1, let first = strokePoints.first, let target = targetPage(at: first) else { return }
+        let pdfPoints = strokePoints.map { convert($0, to: target.page) }
+        onMark?(
+            PageMark(kind: .stroke, rect: EditGestureMath.strokeBounds(pdfPoints), points: pdfPoints),
+            target.id
+        )
     }
 
-    private func targetPage(at viewPoint: CGPoint, in pdfView: PDFView) -> (page: PDFPage, id: UUID)? {
-        let pdfPoint = pdfView.convert(viewPoint, from: self)
-        guard let page = pdfView.page(for: pdfPoint, nearest: true),
-              let document = pdfView.document
-        else { return nil }
+    private func targetPage(at viewPoint: NSPoint) -> (page: PDFPage, id: UUID)? {
+        guard let page = page(for: viewPoint, nearest: true), let document else { return nil }
         let index = document.index(for: page)
         guard let id = ReaderPageIndex.id(at: index, in: pages.map(\.id)) else { return nil }
         return (page, id)
     }
 
-    private func drawCropVeil(_ crop: CGRect, page: PDFPage, pdfView: PDFView) {
-        let keep = pdfView.convert(crop, from: page)
-        let path = NSBezierPath(rect: bounds)
-        path.appendRect(keep)
-        path.windingRule = .evenOdd
-        NSColor.black.withAlphaComponent(0.28).setFill()
-        path.fill()
-        FolioOverlayStyle.vermilion.setStroke()
-        path.lineWidth = 1
-        NSBezierPath(rect: keep).stroke()
-    }
-
-    private func drawCommitted(_ mark: PageMark, page: PDFPage, pdfView: PDFView) {
-        switch mark.kind {
-        case .highlight:
-            let rect = pdfView.convert(mark.rect, from: page)
-            NSColor.systemYellow.withAlphaComponent(0.28).setFill()
-            NSBezierPath(rect: rect).fill()
-        case .underline:
-            let rect = pdfView.convert(mark.rect, from: page)
-            NSColor.systemYellow.setStroke()
-            let path = NSBezierPath()
-            path.lineWidth = 2
-            path.move(to: CGPoint(x: rect.minX, y: rect.minY + 1))
-            path.line(to: CGPoint(x: rect.maxX, y: rect.minY + 1))
-            path.stroke()
-        case .textBox:
-            let rect = pdfView.convert(mark.rect, from: page)
-            NSColor.white.withAlphaComponent(0.9).setFill()
-            NSColor.black.withAlphaComponent(0.25).setStroke()
-            let box = NSBezierPath(roundedRect: rect, xRadius: 2, yRadius: 2)
-            box.lineWidth = 0.6
-            box.fill()
-            box.stroke()
-            if !mark.text.isEmpty {
-                let attrs: [NSAttributedString.Key: Any] = [
-                    .font: NSFont.systemFont(ofSize: max(8, min(14, rect.height * 0.45))),
-                    .foregroundColor: NSColor.black,
-                ]
-                (mark.text as NSString).draw(in: rect.insetBy(dx: 4, dy: 3), withAttributes: attrs)
-            }
-        case .stroke:
-            let path = NSBezierPath()
-            path.lineWidth = 2
-            path.lineCapStyle = .round
-            path.lineJoinStyle = .round
-            for (index, point) in mark.points.enumerated() {
-                let viewPoint = pdfView.convert(point, from: page)
-                if index == 0 { path.move(to: viewPoint) } else { path.line(to: viewPoint) }
-            }
-            NSColor.systemRed.setStroke()
-            path.stroke()
+    private func updateRubber(to current: NSPoint) {
+        guard let start = dragStart else {
+            rubber.path = nil
+            return
         }
-    }
-
-    private func drawLivePreview() {
-        guard capturing, let start = dragStart, let current = dragCurrent else { return }
-        if tool == .edit, editMark == .draw, strokeViewPoints.count > 1 {
-            let path = NSBezierPath()
-            path.lineWidth = 2
-            path.lineCapStyle = .round
-            path.move(to: strokeViewPoints[0])
-            for point in strokeViewPoints.dropFirst() {
-                path.line(to: point)
+        if tool == .edit, editMark == .draw {
+            let path = CGMutablePath()
+            if let first = strokePoints.first {
+                path.move(to: first)
+                for point in strokePoints.dropFirst() { path.addLine(to: point) }
             }
-            NSColor.systemRed.withAlphaComponent(0.9).setStroke()
-            path.stroke()
+            rubber.fillColor = nil
+            rubber.strokeColor = NSColor.systemRed.cgColor
+            rubber.path = path
             return
         }
         let rect = EditGestureMath.rect(from: start, to: current)
         if tool == .redact {
-            FolioOverlayStyle.vermilion.withAlphaComponent(0.28).setFill()
-            NSBezierPath(rect: rect).fill()
-            return
+            rubber.fillColor = NSColor(red: 0.761, green: 0.231, blue: 0.133, alpha: 0.28).cgColor
+            rubber.strokeColor = NSColor(red: 0.761, green: 0.231, blue: 0.133, alpha: 1).cgColor
+        } else if editMark == .crop {
+            rubber.fillColor = NSColor(red: 0.761, green: 0.231, blue: 0.133, alpha: 0.08).cgColor
+            rubber.strokeColor = NSColor(red: 0.761, green: 0.231, blue: 0.133, alpha: 1).cgColor
+        } else if editMark == .textBox {
+            rubber.fillColor = NSColor.white.withAlphaComponent(0.85).cgColor
+            rubber.strokeColor = NSColor.black.withAlphaComponent(0.3).cgColor
+        } else {
+            rubber.fillColor = NSColor.systemYellow.withAlphaComponent(0.22).cgColor
+            rubber.strokeColor = NSColor.systemYellow.cgColor
         }
-        switch editMark {
-        case .crop:
-            FolioOverlayStyle.vermilion.withAlphaComponent(0.08).setFill()
-            FolioOverlayStyle.vermilion.setStroke()
-            let path = NSBezierPath(rect: rect)
-            path.lineWidth = 1.5
-            path.fill()
-            path.stroke()
-        case .underline:
-            NSColor.systemYellow.setStroke()
-            let path = NSBezierPath()
-            path.lineWidth = 2
-            path.move(to: CGPoint(x: rect.minX, y: rect.minY + 1))
-            path.line(to: CGPoint(x: rect.maxX, y: rect.minY + 1))
-            path.stroke()
-        case .textBox:
-            NSColor.white.withAlphaComponent(0.85).setFill()
-            NSColor.black.withAlphaComponent(0.28).setStroke()
-            let path = NSBezierPath(rect: rect)
-            path.lineWidth = 0.6
-            path.fill()
-            path.stroke()
-        default:
-            NSColor.systemYellow.withAlphaComponent(0.25).setFill()
-            NSBezierPath(rect: rect).fill()
-        }
+        rubber.path = CGPath(rect: rect, transform: nil)
     }
-}
-
-private enum FolioOverlayStyle {
-    static let vermilion = NSColor(red: 0.761, green: 0.231, blue: 0.133, alpha: 1)
 }

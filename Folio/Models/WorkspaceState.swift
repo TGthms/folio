@@ -114,6 +114,17 @@ struct WorkspaceState: Equatable, Sendable {
         }
     }
 
+    @discardableResult
+    mutating func removeMark(id: UUID) -> Bool {
+        var removed = false
+        for index in pages.indices {
+            let before = pages[index].marks.count
+            pages[index].marks.removeAll { $0.id == id }
+            if pages[index].marks.count != before { removed = true }
+        }
+        return removed
+    }
+
     mutating func selectAll() {
         selectedIDs = Set(pages.map(\.id))
     }

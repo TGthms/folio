@@ -17,7 +17,7 @@ Drop PDFs or images into a single workspace, arrange pages, pick a job, then exp
 - Protect and unlock
 - Extract text and OCR
 - True redaction (redacted pages are rasterized)
-- Edit: highlight, underline, text box, draw, crop, replace a page with an image. Marks burn on Save / Export. Existing PDF text is not rewritten.
+- Edit: a real PDF view you can scroll. Highlight and underline follow a text selection; draw, text box, and crop use a drag. Marks are PDF annotations and burn on Save / Export. Existing PDF text is not rewritten.
 - Read mode scrolls every page in the workspace
 - 30 interface languages, including RTL; language follows macOS
 - Sandboxed. No network entitlement. Work stays on this computer.
