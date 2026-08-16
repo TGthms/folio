@@ -1,6 +1,6 @@
 # Folio
 
-[English](README.md) · [简体中文](README.zh-Hans.md) · [繁體中文](README.zh-Hant.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md)
+[English](README.md) · [简体中文](docs/readme/README.zh-Hans.md) · [繁體中文](docs/readme/README.zh-Hant.md) · [日本語](docs/readme/README.ja.md) · [한국어](docs/readme/README.ko.md) · [Français](docs/readme/README.fr.md) · [Deutsch](docs/readme/README.de.md) · [Español](docs/readme/README.es.md)
 
 **Folio** is a local-only macOS PDF toolbox published by **TGthms**. Pages live in one workspace. Tools are modes over that workspace. Files never leave this Mac. Export never overwrites an original unless you confirm.
 

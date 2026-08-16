@@ -1,6 +1,6 @@
 # Folio
 
-[English](README.md) · [简体中文](README.zh-Hans.md) · [繁體中文](README.zh-Hant.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md)
+[English](../../README.md) · [简体中文](README.zh-Hans.md) · [繁體中文](README.zh-Hant.md) · [日本語](README.ja.md) · [한국어](README.ko.md) · [Français](README.fr.md) · [Deutsch](README.de.md) · [Español](README.es.md)
 
 **Folio** は **TGthms** が公開する、Mac 上だけで動く PDF ツールです。ページはひとつのワークスペースに集まり、各ツールはそのワークスペースに対するモードです。ファイルはこの Mac から出ません。確認しない限り、書き出しは元のファイルを上書きしません。
 
@@ -64,4 +64,4 @@ xcodebuild -project Folio.xcodeproj -scheme Folio -destination 'platform=macOS' 
 
 ## ライセンス
 
-[MIT](LICENSE) © 2026 TGthms
+[MIT](../../LICENSE) © 2026 TGthms
